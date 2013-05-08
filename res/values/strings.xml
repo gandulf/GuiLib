@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+            
+    <string name="app_name">GuiLib</string>
+    
+    <string name="label_ok">OK</string>
+    <string name="label_donate">Donate</string>
+    
+    <string name="download_finished">Completed</string>
+	<string name="download">Downloading</string>
+	<string name="download_message">The data is being downloaded to your phone.</string>
+	<string name="download_error">An error occurred, the download has been aborted</string>
+	<string name="download_canceled">Download canceled after user input.</string>
+	
+	<string name="label_pick_a_color">Pick a color</string>
+	
+	<string name="label_send_error_report">Send error report&#8230;</string>
+	<string name="message_error_report">An error occurred. To help me fix this error, please send me the following email. No personal data will be transmitted.</string>
+	
+	<string name="news_title">Informations</string>
+</resources>

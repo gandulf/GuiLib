@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>	
+    
+    <string name="label_ok">Ok</string>
+    <string name="label_donate">Spenden</string>
+    
+    <string name="download_finished">Fertig entpackt</string>
+	<string name="download">Herunterladen</string>
+	<string name="download_message">Die benötigten Daten werden heruntergeladen und installiert.</string>
+	<string name="download_error">Es ist ein Fehler aufgetreten, der Download wurde abgebrochen.</string>
+	<string name="download_canceled">Download auf Benutzerwunsch abgebrochen.</string>
+	
+	<string name="label_pick_a_color">Wähle eine Farbe aus</string>
+	
+	<string name="label_send_error_report">Fehlerbericht senden&#8230;</string>
+	<string name="message_error_report">Es ist leider ein Fehler aufgetreten. Um die Behebung des Fehlers zu beschleunigen, schicke mir bitte folgende Email. Es werden keine persönlichen Daten übermittelt.</string>
+	
+	<string name="news_title">Informationen</string>
+</resources>

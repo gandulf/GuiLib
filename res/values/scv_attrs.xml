@@ -1,0 +1,10 @@
+<resources>
+    
+    <declare-styleable name="ShowcaseView">
+        <attr name="android:background" />
+    </declare-styleable>
+    
+    <declare-styleable name="Theme">
+        <attr name="showcaseViewStyle" format="reference"/>
+    </declare-styleable>
+</resources>

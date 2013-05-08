@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	
+	<declare-styleable name="WheelView">
+		<!-- Should the layout be a column or a row?  Use "horizontal"
+             for a row, "vertical" for a column.  The default is
+             vertical. -->
+        <attr name="wheelOrientation">
+            <!-- Defines an horizontal widget. -->
+            <enum name="horizontal" value="0" />
+            <!-- Defines a vertical widget. -->
+            <enum name="vertical" value="1" />
+        </attr>
+        <attr name="visibleItems" format="integer" />
+	</declare-styleable>
+
+	<declare-styleable name="NumberPicker">
+			<!-- The first screen the workspace should display. -->
+		<attr name="current" format="integer" />	
+		<attr name="minimum" format="integer" />
+		<attr name="maximum" format="integer" />
+	</declare-styleable>
+		
+</resources>

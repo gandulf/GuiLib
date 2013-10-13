@@ -12,13 +12,6 @@
             <enum name="vertical" value="1" />
         </attr>
         <attr name="visibleItems" format="integer" />
-	</declare-styleable>
-
-	<declare-styleable name="NumberPicker">
-			<!-- The first screen the workspace should display. -->
-		<attr name="current" format="integer" />	
-		<attr name="minimum" format="integer" />
-		<attr name="maximum" format="integer" />
-	</declare-styleable>
+	</declare-styleable>	
 		
 </resources>

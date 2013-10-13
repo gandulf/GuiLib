@@ -100,9 +100,7 @@ public class Downloader extends AbstractDownloader implements DialogInterface.On
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * android.content.DialogInterface.OnCancelListener#onCancel(android.content
-	 * .DialogInterface)
+	 * @see android.content.DialogInterface.OnCancelListener#onCancel(android.content .DialogInterface)
 	 */
 	@Override
 	public void onCancel(DialogInterface dialog) {

@@ -33,8 +33,7 @@ public class Debug {
 	}
 
 	/**
-	 * Sets the tag to be used in LogCat debug messages If unset, it will
-	 * default to "GuiLib"
+	 * Sets the tag to be used in LogCat debug messages If unset, it will default to "GuiLib"
 	 * 
 	 * @param tag
 	 *            any valid String for LogCat tags

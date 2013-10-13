@@ -8,6 +8,20 @@
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17" />
     
     <application android:label="GuiLib">
+        
+        <receiver
+            android:name="com.gandulf.guilib.download.DownloadBroadcastReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.gandulf.guilib.download.UnzipIntentService"
+            android:exported="false" >
+        </service>
+        
     </application>
     
 </manifest>

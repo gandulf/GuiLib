@@ -302,12 +302,10 @@ public class ShowcaseView extends RelativeLayout implements View.OnClickListener
 	}
 
 	/**
-	 * Decide whether touches outside the showcased circle should be ignored or
-	 * not
+	 * Decide whether touches outside the showcased circle should be ignored or not
 	 * 
 	 * @param block
-	 *            true to block touches, false otherwise. By default, this is
-	 *            true.
+	 *            true to block touches, false otherwise. By default, this is true.
 	 */
 	@Deprecated
 	public void blockNonShowcasedTouches(boolean block) {
@@ -657,12 +655,10 @@ public class ShowcaseView extends RelativeLayout implements View.OnClickListener
 	 * Quickly insert a ShowcaseView into an Activity, highlighting an item.
 	 * 
 	 * @param type
-	 *            the type of item to showcase (can be ITEM_ACTION_HOME,
-	 *            ITEM_TITLE_OR_SPINNER, ITEM_ACTION_ITEM or
+	 *            the type of item to showcase (can be ITEM_ACTION_HOME, ITEM_TITLE_OR_SPINNER, ITEM_ACTION_ITEM or
 	 *            ITEM_ACTION_OVERFLOW)
 	 * @param itemId
-	 *            the ID of an Action item to showcase (only required for
-	 *            ITEM_ACTION_ITEM
+	 *            the ID of an Action item to showcase (only required for ITEM_ACTION_ITEM
 	 * @param activity
 	 *            Activity to insert the ShowcaseView into
 	 * @param title

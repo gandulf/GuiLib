@@ -16,6 +16,7 @@
 package com.commonsware.cwac.merge;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.database.DataSetObserver;
@@ -28,12 +29,10 @@ import android.widget.SectionIndexer;
 import com.commonsware.cwac.sacklist.SackOfViewsAdapter;
 
 /**
- * Adapter that merges multiple child adapters and views into a single
- * contiguous whole.
+ * Adapter that merges multiple child adapters and views into a single contiguous whole.
  * 
- * Adapters used as pieces within MergeAdapter must have view type IDs
- * monotonically increasing from 0. Ideally, adapters also have distinct ranges
- * for their row ids, as returned by getItemId().
+ * Adapters used as pieces within MergeAdapter must have view type IDs monotonically increasing from 0. Ideally,
+ * adapters also have distinct ranges for their row ids, as returned by getItemId().
  * 
  */
 public class MergeAdapter extends BaseAdapter implements SectionIndexer {
@@ -47,8 +46,7 @@ public class MergeAdapter extends BaseAdapter implements SectionIndexer {
 	}
 
 	/**
-	 * Adds a new adapter to the roster of things to appear in the aggregate
-	 * list.
+	 * Adds a new adapter to the roster of things to appear in the aggregate list.
 	 * 
 	 * @param adapter
 	 *            Source for row views for this section
@@ -85,8 +83,7 @@ public class MergeAdapter extends BaseAdapter implements SectionIndexer {
 	}
 
 	/**
-	 * Adds a list of views to the roster of things to appear in the aggregate
-	 * list.
+	 * Adds a list of views to the roster of things to appear in the aggregate list.
 	 * 
 	 * @param views
 	 *            List of views to add
@@ -96,8 +93,7 @@ public class MergeAdapter extends BaseAdapter implements SectionIndexer {
 	}
 
 	/**
-	 * Adds a list of views to the roster of things to appear in the aggregate
-	 * list.
+	 * Adds a list of views to the roster of things to appear in the aggregate list.
 	 * 
 	 * @param views
 	 *            List of views to add
@@ -184,8 +180,7 @@ public class MergeAdapter extends BaseAdapter implements SectionIndexer {
 	}
 
 	/**
-	 * Get the type of View that will be created by getView() for the specified
-	 * item.
+	 * Get the type of View that will be created by getView() for the specified item.
 	 * 
 	 * @param position
 	 *            Position of the item whose data we want
@@ -214,8 +209,7 @@ public class MergeAdapter extends BaseAdapter implements SectionIndexer {
 	}
 
 	/**
-	 * Are all items in this ListAdapter enabled? If yes it means all items are
-	 * selectable and clickable.
+	 * Are all items in this ListAdapter enabled? If yes it means all items are selectable and clickable.
 	 */
 	@Override
 	public boolean areAllItemsEnabled() {
@@ -244,8 +238,7 @@ public class MergeAdapter extends BaseAdapter implements SectionIndexer {
 	}
 
 	/**
-	 * Get a View that displays the data at the specified position in the data
-	 * set.
+	 * Get a View that displays the data at the specified position in the data set.
 	 * 
 	 * @param position
 	 *            Position of the item whose data we want
@@ -355,9 +348,7 @@ public class MergeAdapter extends BaseAdapter implements SectionIndexer {
 				Object[] curSections = ((SectionIndexer) piece).getSections();
 
 				if (curSections != null) {
-					for (Object section : curSections) {
-						sections.add(section);
-					}
+					Collections.addAll(sections, curSections);
 				}
 			}
 		}

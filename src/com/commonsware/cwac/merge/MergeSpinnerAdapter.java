@@ -8,16 +8,13 @@ import android.widget.ListAdapter;
 import android.widget.SpinnerAdapter;
 
 /**
- * Adapter that merges multiple child adapters into a single contiguous whole to
- * be consumed by a Spinner.
+ * Adapter that merges multiple child adapters into a single contiguous whole to be consumed by a Spinner.
  * 
- * Adapters used as pieces within MergeSpinnerAdapter must have view type IDs
- * monotonically increasing from 0. Ideally, adapters also have distinct ranges
- * for their row ids, as returned by getItemId().
+ * Adapters used as pieces within MergeSpinnerAdapter must have view type IDs monotonically increasing from 0. Ideally,
+ * adapters also have distinct ranges for their row ids, as returned by getItemId().
  * 
- * All Adapters used as pieces within MergeSpinnerAdapter must be
- * properly-configured implementations of SpinnerAdapter (e.g., ArrayAdapter,
- * CursorAdapter).
+ * All Adapters used as pieces within MergeSpinnerAdapter must be properly-configured implementations of SpinnerAdapter
+ * (e.g., ArrayAdapter, CursorAdapter).
  */
 public class MergeSpinnerAdapter extends MergeAdapter {
 	/**
@@ -28,11 +25,10 @@ public class MergeSpinnerAdapter extends MergeAdapter {
 	}
 
 	/*
-	 * Returns the drop-down View for a given position, by iterating over the
-	 * pieces. Assumes that all pieces are implementations of SpinnerAdapter.
+	 * Returns the drop-down View for a given position, by iterating over the pieces. Assumes that all pieces are
+	 * implementations of SpinnerAdapter.
 	 * 
-	 * @see android.widget.BaseAdapter#getDropDownView(int, android.view.View,
-	 * android.view.ViewGroup)
+	 * @see android.widget.BaseAdapter#getDropDownView(int, android.view.View, android.view.ViewGroup)
 	 */
 	public View getDropDownView(int position, View convertView, ViewGroup parent) {
 		for (ListAdapter piece : getPieces()) {
@@ -71,8 +67,7 @@ public class MergeSpinnerAdapter extends MergeAdapter {
 	}
 
 	/**
-	 * Adds a list of views to the roster of things to appear in the aggregate
-	 * list.
+	 * Adds a list of views to the roster of things to appear in the aggregate list.
 	 * 
 	 * @param views
 	 *            List of views to add
@@ -82,8 +77,7 @@ public class MergeSpinnerAdapter extends MergeAdapter {
 	}
 
 	/**
-	 * Adds a list of views to the roster of things to appear in the aggregate
-	 * list.
+	 * Adds a list of views to the roster of things to appear in the aggregate list.
 	 * 
 	 * @param views
 	 *            List of views to add

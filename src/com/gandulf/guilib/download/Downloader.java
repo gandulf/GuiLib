@@ -241,24 +241,31 @@ public class Downloader extends AbstractDownloader implements DialogInterface.On
 			close();
 			switch (result) {
 			case RESULT_OK:
-				Toast.makeText(context, R.string.download_finished, Toast.LENGTH_SHORT).show();
+				if (context != null) {
+					Toast.makeText(context, R.string.download_finished, Toast.LENGTH_SHORT).show();
+				}
 				break;
 			case RESULT_CANCELED:
-				Toast.makeText(context, R.string.download_canceled, Toast.LENGTH_SHORT).show();
+				if (context != null) {
+					Toast.makeText(context, R.string.download_canceled, Toast.LENGTH_SHORT).show();
+				}
 				break;
 			case RESULT_ERROR:
-				if (errorDescription == null)
-					Toast.makeText(context, R.string.download_error, Toast.LENGTH_SHORT).show();
-				else
-					Toast.makeText(context, errorDescription, Toast.LENGTH_LONG).show();
+				if (context != null) {
+					if (errorDescription == null)
+						Toast.makeText(context, R.string.download_error, Toast.LENGTH_SHORT).show();
+					else
+						Toast.makeText(context, errorDescription, Toast.LENGTH_LONG).show();
+				}
 				break;
 			}
-
-			Intent intent = new Intent(Downloader.ACTION_UNZIP_COMPLETE);
-			intent.putExtra(Downloader.INTENT_RESULT, result);
-			intent.putExtra(Downloader.INTENT_EXCEPTION, caughtException);
-			intent.putExtra(Downloader.INTENT_ERROR, errorDescription);
-			context.sendBroadcast(intent);
+			if (context != null) {
+				Intent intent = new Intent(Downloader.ACTION_UNZIP_COMPLETE);
+				intent.putExtra(Downloader.INTENT_RESULT, result);
+				intent.putExtra(Downloader.INTENT_EXCEPTION, caughtException);
+				intent.putExtra(Downloader.INTENT_ERROR, errorDescription);
+				context.sendBroadcast(intent);
+			}
 
 		}
 

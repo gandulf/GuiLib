@@ -9,7 +9,6 @@ buildscript {
 
 apply plugin: 'android-library'
 
-
 group = 'com.gandulf.guilib'
 version = '1.0.0'
 
@@ -29,7 +28,7 @@ dependencies {
 
 android {
     compileSdkVersion 18
-    buildToolsVersion "19.0.0"
+    buildToolsVersion "19.0.1"
 
     sourceSets {
         main {

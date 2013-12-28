@@ -3,11 +3,12 @@ GuiLib
 
 A library containing usefull components and utility classes for android application development
 
-* Drag Sort list Can be downloaded from https://github.com/bauerca/drag-sort-listview
-* PhotoView Can be downloaded from https://github.com/chrisbanes/PhotoView
-* ShowcaseView Can be downloaded from https://github.com/Espiandev/ShowcaseView
-* Draggable GridView Can be downloaded from https://github.com/thquinn/DraggableGridView
-* GridViewCompat Can be downloaded from https://github.com/paramvir-b/AndroidGridViewCompatLib
+* ListViewAnimations can be downloaded from https://github.com/nhaarman/ListViewAnimations
+* PhotoView can be downloaded from https://github.com/chrisbanes/PhotoView
+* ShowcaseView can be downloaded from https://github.com/Espiandev/ShowcaseView
+* Draggable GridView can be downloaded from https://github.com/thquinn/DraggableGridView
+* GridViewCompat can be downloaded from https://github.com/paramvir-b/AndroidGridViewCompatLib
+* FlipImageView can be downloaded from https://github.com/castorflex/FlipImageView
 
 ## License
 

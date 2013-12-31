@@ -1,6 +1,6 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="ShowcaseViewStyle">
+    <style name="ShowcaseView">
         <item name="android:background">#99003e53</item>
     </style>
     <style name="ShowcaseButton">

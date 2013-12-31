@@ -17,7 +17,6 @@ import android.widget.BaseAdapter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-import com.gandulf.guilib.util.Debug;
 import com.haarman.listviewanimations.view.DynamicListView.Swappable;
 
 /**
@@ -238,17 +237,20 @@ public class OpenArrayAdapter<T> extends BaseAdapter implements Filterable, Swap
 	/**
 	 * Removes the element at the specified position in the list
 	 */
-	public void remove(int position) {
+	public T remove(int position) {
+		T result = null;
 		if (mOriginalValues != null) {
 			synchronized (mLock) {
-				T temp = mOriginalValues.remove(position);
-				mObjects.remove(temp);
+				result = mOriginalValues.remove(position);
+				mObjects.remove(result);
 			}
 		} else {
-			mObjects.remove(position);
+			result = mObjects.remove(position);
 		}
-		if (mNotifyOnChange)
+		if (result != null && mNotifyOnChange)
 			notifyDataSetChanged();
+
+		return result;
 	}
 
 	/**
@@ -257,17 +259,20 @@ public class OpenArrayAdapter<T> extends BaseAdapter implements Filterable, Swap
 	 * @param object
 	 *            The object to remove.
 	 */
-	public void remove(T object) {
+	public boolean remove(T object) {
+		boolean result;
 		if (mOriginalValues != null) {
 			synchronized (mLock) {
+				result = mOriginalValues.remove(object);
 				mObjects.remove(object);
-				mOriginalValues.remove(object);
 			}
 		} else {
-			mObjects.remove(object);
+			result = mObjects.remove(object);
 		}
-		if (mNotifyOnChange)
+		if (result && mNotifyOnChange)
 			notifyDataSetChanged();
+
+		return result;
 	}
 
 	/**
@@ -315,8 +320,7 @@ public class OpenArrayAdapter<T> extends BaseAdapter implements Filterable, Swap
 
 	@Override
 	public void swapItems(int positionOne, int positionTwo) {
-		Debug.verbose("swap:" + positionOne + " - " + positionTwo);
-		Debug.verbose("before swap:" + mObjects);
+
 		if (mOriginalValues != null && mOriginalValues != mObjects) {
 			synchronized (mLock) {
 				T temp = mObjects.get(positionOne);
@@ -338,7 +342,6 @@ public class OpenArrayAdapter<T> extends BaseAdapter implements Filterable, Swap
 			mObjects.set(positionTwo, temp);
 		}
 
-		Debug.verbose("after swap:" + mObjects);
 		if (mNotifyOnChange)
 			notifyDataSetChanged();
 	}
@@ -423,7 +426,10 @@ public class OpenArrayAdapter<T> extends BaseAdapter implements Filterable, Swap
 	 */
 	@Override
 	public long getItemId(int position) {
-		return mObjects.get(position).hashCode();
+		if (position < 0 || position >= mObjects.size())
+			return AdapterView.INVALID_ROW_ID;
+		else
+			return mObjects.get(position).hashCode();
 	}
 
 	@Override

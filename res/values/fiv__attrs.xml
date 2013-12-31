@@ -15,7 +15,7 @@
         <attr name="reverseRotation" format="boolean"></attr>
     </declare-styleable>
     
-    <declare-styleable name="Theme">
+    <declare-styleable name="FivTheme">
         <attr name="flipImageViewStyle" format="reference"/>
     </declare-styleable>
 

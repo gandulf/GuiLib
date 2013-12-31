@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>	
+    <string name="app_name">GuiLib</string>
     
     <string name="label_ok">Ok</string>
     <string name="label_donate">Spenden</string>

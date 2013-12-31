@@ -164,6 +164,8 @@ public class WheelView extends View {
 		// if (index >= 0) {
 		// setOrientation(index);
 		// }
+
+		a.recycle();
 	}
 
 	// Scrolling listener
@@ -249,9 +251,8 @@ public class WheelView extends View {
 	}
 
 	/**
-	 * Sets the desired count of visible items. Actual amount of visible items
-	 * depends on wheel layout parameters. To apply changes and rebuild view
-	 * call measure().
+	 * Sets the desired count of visible items. Actual amount of visible items depends on wheel layout parameters. To
+	 * apply changes and rebuild view call measure().
 	 * 
 	 * @param count
 	 *            the desired count for visible items
@@ -283,8 +284,8 @@ public class WheelView extends View {
 	};
 
 	/**
-	 * Sets view adapter. Usually new adapters contain different views, so it
-	 * needs to rebuild view by calling measure().
+	 * Sets view adapter. Usually new adapters contain different views, so it needs to rebuild view by calling
+	 * measure().
 	 * 
 	 * @param viewAdapter
 	 *            the view adapter
@@ -442,8 +443,7 @@ public class WheelView extends View {
 	}
 
 	/**
-	 * Tests if wheel is cyclic. That means before the 1st item there is shown
-	 * the last one
+	 * Tests if wheel is cyclic. That means before the 1st item there is shown the last one
 	 * 
 	 * @return true if wheel is cyclic
 	 */
@@ -1038,8 +1038,7 @@ public class WheelView extends View {
 	}
 
 	/**
-	 * Updates view. Rebuilds items and label if necessary, recalculate items
-	 * sizes.
+	 * Updates view. Rebuilds items and label if necessary, recalculate items sizes.
 	 */
 	private void updateView() {
 		if (rebuildItems()) {

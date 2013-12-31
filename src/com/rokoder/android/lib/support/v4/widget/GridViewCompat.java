@@ -1,5 +1,3 @@
-package com.rokoder.android.lib.support.v4.widget;
-
 /*
  * Copyright (C) 2006 The Android Open Source Project
  *
@@ -21,11 +19,14 @@ package com.rokoder.android.lib.support.v4.widget;
  * @mail paramvir@rokoder.com
  */
 
+package com.rokoder.android.lib.support.v4.widget;
+
 import java.lang.reflect.Array;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -38,11 +39,9 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 /**
- * This class is based on the GridView. We need to create this class as
- * multiselection comes in API 10 into GridView. So lot of code is copied from
- * the Android Source Code. APIs which we are implementing here are suffixed
- * with 'C' to avoid recursion which when you try to call the API using
- * reflection. So we made the signature different.
+ * This class is based on the GridView. We need to create this class as multiselection comes in API 10 into GridView. So
+ * lot of code is copied from the Android Source Code. APIs which we are implementing here are suffixed with 'C' to
+ * avoid recursion which when you try to call the API using reflection. So we made the signature different.
  * 
  * <pre>
  * Ref code:
@@ -60,15 +59,14 @@ public class GridViewCompat extends GridView {
 	 */
 	SparseBooleanArray mCheckStatesC;
 	/**
-	 * Running state of which IDs are currently checked. If there is a value for
-	 * a given key, the checked state for that ID is true and the value holds
-	 * the last known position in the adapter for that id.
+	 * Running state of which IDs are currently checked. If there is a value for a given key, the checked state for that
+	 * ID is true and the value holds the last known position in the adapter for that id.
 	 */
 	LongSparseArray<Integer> mCheckedIdStatesC;
 	/**
 	 * Controls if/how the user may choose/check items in the list
 	 */
-	int mChoiceModeC = ListView.CHOICE_MODE_MULTIPLE;
+	int mChoiceModeC = ListView.CHOICE_MODE_NONE;
 
 	/**
 	 * Variables for backward compatibility
@@ -117,9 +115,8 @@ public class GridViewCompat extends GridView {
 	}
 
 	/**
-	 * SparseArrays map longs to Objects. Unlike a normal array of Objects,
-	 * there can be gaps in the indices. It is intended to be more efficient
-	 * than using a HashMap to map Longs to Objects.
+	 * SparseArrays map longs to Objects. Unlike a normal array of Objects, there can be gaps in the indices. It is
+	 * intended to be more efficient than using a HashMap to map Longs to Objects.
 	 * 
 	 * <pre>
 	 * Source : https://github.com/android/platform_frameworks_base/blob/master/core/java/android/util/LongSparseArray.java
@@ -139,9 +136,8 @@ public class GridViewCompat extends GridView {
 		}
 
 		/**
-		 * Creates a new SparseArray containing no mappings that will not
-		 * require any additional memory allocation to store the specified
-		 * number of mappings.
+		 * Creates a new SparseArray containing no mappings that will not require any additional memory allocation to
+		 * store the specified number of mappings.
 		 */
 		public LongSparseArray(int initialCapacity) {
 			initialCapacity = ArrayUtils.idealIntArraySize(initialCapacity);
@@ -177,16 +173,14 @@ public class GridViewCompat extends GridView {
 		}
 
 		/**
-		 * Gets the Object mapped from the specified key, or <code>null</code>
-		 * if no such mapping has been made.
+		 * Gets the Object mapped from the specified key, or <code>null</code> if no such mapping has been made.
 		 */
 		public E get(long key) {
 			return get(key, null);
 		}
 
 		/**
-		 * Gets the Object mapped from the specified key, or the specified
-		 * Object if no such mapping has been made.
+		 * Gets the Object mapped from the specified key, or the specified Object if no such mapping has been made.
 		 */
 		public E get(long key, E valueIfKeyNotFound) {
 			int i = binarySearch(mKeys, 0, mSize, key);
@@ -247,9 +241,8 @@ public class GridViewCompat extends GridView {
 		}
 
 		/**
-		 * Adds a mapping from the specified key to the specified value,
-		 * replacing the previous mapping from the specified key if there was
-		 * one.
+		 * Adds a mapping from the specified key to the specified value, replacing the previous mapping from the
+		 * specified key if there was one.
 		 */
 		public void put(long key, E value) {
 			int i = binarySearch(mKeys, 0, mSize, key);
@@ -300,8 +293,7 @@ public class GridViewCompat extends GridView {
 		}
 
 		/**
-		 * Returns the number of key-value mappings that this SparseArray
-		 * currently stores.
+		 * Returns the number of key-value mappings that this SparseArray currently stores.
 		 */
 		public int size() {
 			if (mGarbage) {
@@ -312,9 +304,8 @@ public class GridViewCompat extends GridView {
 		}
 
 		/**
-		 * Given an index in the range <code>0...size()-1</code>, returns the
-		 * key from the <code>index</code>th key-value mapping that this
-		 * SparseArray stores.
+		 * Given an index in the range <code>0...size()-1</code>, returns the key from the <code>index</code>th
+		 * key-value mapping that this SparseArray stores.
 		 */
 		public long keyAt(int index) {
 			if (mGarbage) {
@@ -325,9 +316,8 @@ public class GridViewCompat extends GridView {
 		}
 
 		/**
-		 * Given an index in the range <code>0...size()-1</code>, returns the
-		 * value from the <code>index</code>th key-value mapping that this
-		 * SparseArray stores.
+		 * Given an index in the range <code>0...size()-1</code>, returns the value from the <code>index</code>th
+		 * key-value mapping that this SparseArray stores.
 		 */
 		public E valueAt(int index) {
 			if (mGarbage) {
@@ -338,9 +328,8 @@ public class GridViewCompat extends GridView {
 		}
 
 		/**
-		 * Given an index in the range <code>0...size()-1</code>, sets a new
-		 * value for the <code>index</code>th key-value mapping that this
-		 * SparseArray stores.
+		 * Given an index in the range <code>0...size()-1</code>, sets a new value for the <code>index</code>th
+		 * key-value mapping that this SparseArray stores.
 		 */
 		public void setValueAt(int index, E value) {
 			if (mGarbage) {
@@ -351,8 +340,8 @@ public class GridViewCompat extends GridView {
 		}
 
 		/**
-		 * Returns the index for which {@link #keyAt} would return the specified
-		 * key, or a negative number if the specified key is not mapped.
+		 * Returns the index for which {@link #keyAt} would return the specified key, or a negative number if the
+		 * specified key is not mapped.
 		 */
 		public int indexOfKey(long key) {
 			if (mGarbage) {
@@ -363,11 +352,9 @@ public class GridViewCompat extends GridView {
 		}
 
 		/**
-		 * Returns an index for which {@link #valueAt} would return the
-		 * specified key, or a negative number if no keys map to the specified
-		 * value. Beware that this is a linear search, unlike lookups by key,
-		 * and that multiple keys can map to the same value and this will find
-		 * only one of them.
+		 * Returns an index for which {@link #valueAt} would return the specified key, or a negative number if no keys
+		 * map to the specified value. Beware that this is a linear search, unlike lookups by key, and that multiple
+		 * keys can map to the same value and this will find only one of them.
 		 */
 		public int indexOfValue(E value) {
 			if (mGarbage) {
@@ -397,8 +384,8 @@ public class GridViewCompat extends GridView {
 		}
 
 		/**
-		 * Puts a key/value pair into the array, optimizing for the case where
-		 * the key is greater than all existing keys in the array.
+		 * Puts a key/value pair into the array, optimizing for the case where the key is greater than all existing keys
+		 * in the array.
 		 */
 		public void append(long key, E value) {
 			if (mSize != 0 && key <= mKeys[mSize - 1]) {
@@ -473,8 +460,8 @@ public class GridViewCompat extends GridView {
 	// and the array size eats another 4 bytes
 
 	/**
-	 * ArrayUtils contains some methods that you can call to find out the most
-	 * efficient increments by which to grow arrays. *
+	 * ArrayUtils contains some methods that you can call to find out the most efficient increments by which to grow
+	 * arrays. *
 	 * 
 	 * <pre>
 	 * Source : https://github.com/android/platform_frameworks_base/blob/master/core/java/com/android/internal/util/ArrayUtils.java
@@ -551,9 +538,8 @@ public class GridViewCompat extends GridView {
 		}
 
 		/**
-		 * Returns an empty array of the specified type. The intent is that it
-		 * will return the same empty array every time to avoid reallocation,
-		 * although this is not guaranteed.
+		 * Returns an empty array of the specified type. The intent is that it will return the same empty array every
+		 * time to avoid reallocation, although this is not guaranteed.
 		 */
 		public static <T> T[] emptyArray(Class<T> kind) {
 			if (kind == Object.class) {
@@ -575,8 +561,7 @@ public class GridViewCompat extends GridView {
 		}
 
 		/**
-		 * Checks that value is present as at least one of the elements of the
-		 * array.
+		 * Checks that value is present as at least one of the elements of the array.
 		 * 
 		 * @param array
 		 *            the array to check in
@@ -685,8 +670,8 @@ public class GridViewCompat extends GridView {
 	}
 
 	/**
-	 * This api is not implemented yet but can be implemented if you want to set
-	 * the multi-selection from the xml file not from the code
+	 * This api is not implemented yet but can be implemented if you want to set the multi-selection from the xml file
+	 * not from the code
 	 */
 	private void initAttrs(AttributeSet attrs) {
 
@@ -698,20 +683,10 @@ public class GridViewCompat extends GridView {
 	 * @see #setChoiceMode(int)
 	 * @return The current choice mode
 	 */
-	public int getChoiceModeC() {
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public int getChoiceMode() {
 		if (!inCompatibleMode && gridView_getChoiceMode != null)
-			try {
-				return (Integer) gridView_getChoiceMode.invoke(this, (Object[]) null);
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			return super.getChoiceMode();
 		return mChoiceModeC;
 	}
 
@@ -750,20 +725,10 @@ public class GridViewCompat extends GridView {
 	 * 
 	 * @return
 	 */
-	public long[] getCheckedItemIdsC() {
-		if (!inCompatibleMode) {
-			try {
-				return (long[]) gridView_getCheckedItemIds.invoke(this, (Object[]) null);
-			} catch (IllegalArgumentException e) {
-				// TODO
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO
-				e.printStackTrace();
-			}
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public long[] getCheckedItemIds() {
+		if (!inCompatibleMode && gridView_getCheckedItemIds != null) {
+			return super.getCheckedItemIds();
 		}
 
 		// Code copied from Android source
@@ -788,20 +753,10 @@ public class GridViewCompat extends GridView {
 	 * @param position
 	 * @return
 	 */
-	public boolean isItemCheckedC(int position) {
-		if (!inCompatibleMode) {
-			try {
-				return (Boolean) gridView_isItemChecked.invoke(this, Integer.valueOf(position));
-			} catch (IllegalArgumentException e) {
-				// TODO
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO
-				e.printStackTrace();
-			}
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public boolean isItemChecked(int position) {
+		if (!inCompatibleMode && gridView_isItemChecked != null) {
+			return super.isItemChecked(position);
 		}
 
 		// Code copied from Android source
@@ -817,20 +772,10 @@ public class GridViewCompat extends GridView {
 	 * 
 	 * @return
 	 */
-	public int getCheckedItemPositionC() {
-		if (!inCompatibleMode) {
-			try {
-				return (Integer) gridView_getCheckedItemPosition.invoke(this, (Object[]) null);
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public int getCheckedItemPosition() {
+		if (!inCompatibleMode && gridView_getCheckedItemPosition != null) {
+			return super.getCheckedItemPosition();
 		}
 
 		// Code copied from Android source
@@ -846,20 +791,10 @@ public class GridViewCompat extends GridView {
 	 * 
 	 * @return
 	 */
-	public SparseBooleanArray getCheckedItemPositionsC() {
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public SparseBooleanArray getCheckedItemPositions() {
 		if (!inCompatibleMode) {
-			try {
-				return (SparseBooleanArray) gridView_getCheckedItemPositions.invoke(this, (Object[]) null);
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			return super.getCheckedItemPositions();
 		}
 
 		// Code copied from Android source
@@ -872,20 +807,10 @@ public class GridViewCompat extends GridView {
 	/**
 	 * WARN Do not call the default api
 	 */
-	public void clearChoicesC() {
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public void clearChoices() {
 		if (!inCompatibleMode) {
-			try {
-				gridView_clearChoices.invoke(this, (Object[]) null);
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			super.clearChoices();
 			return;
 		}
 
@@ -979,20 +904,10 @@ public class GridViewCompat extends GridView {
 	 * }
 	 * </pre>
 	 */
-	public void setItemCheckedC(int position, boolean value) {
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public void setItemChecked(int position, boolean value) {
 		if (!inCompatibleMode) {
-			try {
-				gridView_setItemChecked.invoke(this, Integer.valueOf(position), Boolean.valueOf(value));
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			super.setItemChecked(position, value);
 			return;
 		}
 
@@ -1024,7 +939,7 @@ public class GridViewCompat extends GridView {
 			// Clear all values if we're checking something, or unchecking the
 			// currently
 			// selected item
-			if (value || isItemCheckedC(position)) {
+			if (value || isItemChecked(position)) {
 				mCheckStatesC.clear();
 				if (updateIds) {
 					mCheckedIdStatesC.clear();
@@ -1174,20 +1089,10 @@ public class GridViewCompat extends GridView {
 	 * 
 	 * @param choiceMode
 	 */
-	public void setChoiceModeC(int choiceMode) {
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public void setChoiceMode(int choiceMode) {
 		if (!inCompatibleMode) {
-			try {
-				gridView_setChoiceMode.invoke(this, Integer.valueOf(choiceMode));
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			super.setChoiceMode(choiceMode);
 			return;
 		}
 
@@ -1272,20 +1177,10 @@ public class GridViewCompat extends GridView {
 	 * 
 	 * @return
 	 */
-	public int getCheckedItemCountC() {
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public int getCheckedItemCount() {
 		if (!inCompatibleMode) {
-			try {
-				return (Integer) gridView_getCheckedItemCount.invoke(this, (Object[]) null);
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			return super.getCheckedItemCount();
 		}
 
 		return mCheckedItemCountC;

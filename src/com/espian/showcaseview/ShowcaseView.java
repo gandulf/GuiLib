@@ -2,6 +2,7 @@ package com.espian.showcaseview;
 
 import java.lang.reflect.Field;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -70,18 +71,18 @@ public class ShowcaseView extends RelativeLayout implements View.OnClickListener
 	private String mTitleText, mSubText;
 
 	public ShowcaseView(Context context) {
-		this(context, null, R.styleable.Theme_showcaseViewStyle);
+		this(context, null, R.attr.showcaseViewStyle);
 	}
 
 	public ShowcaseView(Context context, AttributeSet attrs) {
-		this(context, attrs, R.styleable.Theme_showcaseViewStyle);
+		this(context, attrs, R.attr.showcaseViewStyle);
 	}
 
 	public ShowcaseView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 
 		TypedArray styled = context.obtainStyledAttributes(attrs, R.styleable.ShowcaseView, defStyle,
-				R.style.ShowcaseViewStyle);
+				R.style.ShowcaseView);
 		backColor = styled.getColor(R.styleable.ShowcaseView_android_background, Color.argb(51, 51, 181, 229));
 		styled.recycle();
 
@@ -201,16 +202,20 @@ public class ShowcaseView extends RelativeLayout implements View.OnClickListener
 
 	public void setShowcaseItem(final int itemType, final int actionItemId, final Activity activity) {
 		post(new Runnable() {
+			@SuppressLint("InlinedApi")
 			@Override
 			public void run() {
-				View homeButton = activity.findViewById(android.R.id.home);
+				View homeButton = null;
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+					homeButton = activity.findViewById(android.R.id.home);
+				}
 				if (homeButton == null)
 					throw new RuntimeException("insertShowcaseViewWithType cannot be used when the theme "
 							+ "has no ActionBar");
 				ViewParent p = homeButton.getParent().getParent(); // ActionBarView
 
-				Class abv = p.getClass(); // ActionBarView class
-				Class absAbv = abv.getSuperclass(); // AbsActionBarView class
+				Class<? extends ViewParent> abv = p.getClass(); // ActionBarView class
+				Class<?> absAbv = abv.getSuperclass(); // AbsActionBarView class
 
 				switch (itemType) {
 

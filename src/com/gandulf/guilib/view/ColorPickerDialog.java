@@ -43,6 +43,7 @@ public class ColorPickerDialog extends AlertDialog {
 		private Paint mCenterPaint;
 		private final int[] mColors;
 		private OnColorChangedListener mListener;
+		private RectF drawRect;
 
 		ColorPickerView(Context c, OnColorChangedListener l, int color) {
 			super(c);
@@ -59,6 +60,8 @@ public class ColorPickerDialog extends AlertDialog {
 			mCenterPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 			mCenterPaint.setColor(color);
 			mCenterPaint.setStrokeWidth(5);
+
+			drawRect = new RectF();
 		}
 
 		private boolean mTrackingCenter;
@@ -69,8 +72,8 @@ public class ColorPickerDialog extends AlertDialog {
 			float r = CENTER_X - mPaint.getStrokeWidth() * 0.5f;
 
 			canvas.translate(CENTER_X, CENTER_X);
-
-			canvas.drawOval(new RectF(-r, -r, r, r), mPaint);
+			drawRect.set(-r, -r, r, r);
+			canvas.drawOval(drawRect, mPaint);
 			canvas.drawCircle(0, 0, CENTER_RADIUS, mCenterPaint);
 
 			if (mTrackingCenter) {

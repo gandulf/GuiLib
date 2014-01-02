@@ -6,7 +6,6 @@ A library containing usefull components and utility classes for android applicat
 * ListViewAnimations can be downloaded from https://github.com/nhaarman/ListViewAnimations
 * PhotoView can be downloaded from https://github.com/chrisbanes/PhotoView
 * ShowcaseView can be downloaded from https://github.com/Espiandev/ShowcaseView
-* Draggable GridView can be downloaded from https://github.com/thquinn/DraggableGridView
 * GridViewCompat can be downloaded from https://github.com/paramvir-b/AndroidGridViewCompatLib
 * FlipImageView can be downloaded from https://github.com/castorflex/FlipImageView
 

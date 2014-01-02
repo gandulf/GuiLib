@@ -5,16 +5,23 @@ import android.content.res.TypedArray;
 import android.graphics.Camera;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.Transformation;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 
 import com.gandulf.guilib.R;
+import com.gandulf.guilib.listener.CheckableListenable;
+import com.gandulf.guilib.listener.OnCheckedChangeListener;
+import com.gandulf.guilib.util.ResUtil;
 
 /**
  * Created with IntelliJ IDEA. User: castorflex Date: 30/12/12 Time: 16:25
@@ -138,6 +145,14 @@ public class FlipImageView extends ImageView implements View.OnClickListener, An
 		mDrawable = getContext().getResources().getDrawable(resId);
 		if (!mIsFlipped)
 			super.setImageResource(resId);
+	}
+
+	@Override
+	public void setImageURI(Uri uri) {
+		mDrawable = ResUtil.getDrawableByUri(getContext(), uri);
+		if (!mIsFlipped) {
+			super.setImageURI(uri);
+		}
 	}
 
 	public boolean isRotationXEnabled() {
@@ -338,6 +353,77 @@ public class FlipImageView extends ImageView implements View.OnClickListener, An
 
 			matrix.preTranslate(-centerX, -centerY);
 			matrix.postTranslate(centerX, centerY);
+		}
+	}
+
+	private static OnCheckedChangeListener checkedChangeListener = new OnCheckedChangeListener() {
+
+		@Override
+		public void onCheckedChanged(View checkableView, boolean isChecked) {
+			if (checkableView.getTag() instanceof FlippableViewHolder) {
+				FlippableViewHolder holder = (FlippableViewHolder) checkableView.getTag();
+				if (holder.flip != null) {
+					holder.flip.setRotationReversed(isChecked);
+					holder.flip.setFlipped(isChecked, true);
+				}
+			}
+		}
+
+	};
+
+	private static OnClickListener flipClickListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			FlipImageView flipImageView = (FlipImageView) v;
+			if (v.getTag() instanceof FlippableViewHolder) {
+				FlippableViewHolder listHolder = (FlippableViewHolder) v.getTag();
+				listHolder.list.setItemChecked(listHolder.position, !flipImageView.isFlipped());
+			}
+		}
+	};
+
+	/**
+	 * Helper class for Adapters to extends ViewHolder if flipping in listviews is needed
+	 * 
+	 */
+	public static class FlippableViewHolder {
+		public FlipImageView flip;
+
+		public ListView list;
+		public int position;
+
+		public static void prepare(int position, View convertView, ViewGroup parent) {
+
+			if (convertView.getTag() instanceof FlippableViewHolder) {
+				FlippableViewHolder checkableViewHolder = (FlippableViewHolder) convertView.getTag();
+
+				if (parent instanceof ListView) {
+					checkableViewHolder.list = (ListView) parent;
+					checkableViewHolder.position = position;
+					if (checkableViewHolder.flip != null) {
+						checkableViewHolder.flip.setOnClickListener(flipClickListener);
+						checkableViewHolder.flip.setTag(checkableViewHolder);
+					}
+				} else {
+					checkableViewHolder.list = null;
+					checkableViewHolder.position = AdapterView.INVALID_POSITION;
+					if (checkableViewHolder.flip != null) {
+						checkableViewHolder.flip.setOnClickListener(null);
+						checkableViewHolder.flip.setTag(null);
+					}
+				}
+
+				if (convertView instanceof CheckableListenable) {
+					CheckableListenable checkable = (CheckableListenable) convertView;
+					if (checkableViewHolder.flip != null) {
+						checkableViewHolder.flip.setFlipped(checkable.isChecked(), false);
+						checkableViewHolder.flip.setRotationReversed(checkable.isChecked());
+					}
+					checkable.setOnCheckedChangeListener(checkedChangeListener);
+				}
+			}
+
 		}
 	}
 }

@@ -18,7 +18,11 @@ package com.gandulf.guilib.util;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.util.Log;
 
 /**
  * Utility class to bundle resource helper methods
@@ -102,6 +106,30 @@ public class ResUtil {
 			return null;
 		}
 
+	}
+
+	public static Drawable getDrawableByUri(Context context, Uri mUri) {
+		Drawable d = null;
+		if (mUri != null) {
+			String scheme = mUri.getScheme();
+
+			if (ContentResolver.SCHEME_ANDROID_RESOURCE.equals(scheme) || ContentResolver.SCHEME_CONTENT.equals(scheme)
+					|| ContentResolver.SCHEME_FILE.equals(scheme)) {
+				try {
+					d = Drawable.createFromStream(context.getContentResolver().openInputStream(mUri), null);
+				} catch (Exception e) {
+					Log.w("Util", "Unable to open content: " + mUri, e);
+				}
+			} else {
+				d = Drawable.createFromPath(mUri.toString());
+			}
+
+			if (d == null) {
+				System.out.println("resolveUri failed on bad uri: " + mUri);
+			}
+		}
+
+		return d;
 	}
 
 	public static int getResourceIdForDrawable(Context _context, String resPackage, String resName) {

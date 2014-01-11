@@ -17,6 +17,7 @@ import android.widget.BaseAdapter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import com.gandulf.guilib.util.Debug;
 import com.haarman.listviewanimations.view.DynamicListView.Swappable;
 
 /**
@@ -169,8 +170,12 @@ public class OpenArrayAdapter<T> extends BaseAdapter implements Filterable, Swap
 
 		setNotifyOnChange(false);
 
-		for (T object : objects) {
-			add(object);
+		if (mOriginalValues != null) {
+			for (T object : objects) {
+				add(object);
+			}
+		} else {
+			mObjects.addAll(objects);
 		}
 
 		if (notify) {
@@ -320,7 +325,8 @@ public class OpenArrayAdapter<T> extends BaseAdapter implements Filterable, Swap
 
 	@Override
 	public void swapItems(int positionOne, int positionTwo) {
-
+		Debug.verbose("swap " + positionOne + ", " + positionTwo);
+		Debug.verbose("before " + mObjects);
 		if (mOriginalValues != null && mOriginalValues != mObjects) {
 			synchronized (mLock) {
 				T temp = mObjects.get(positionOne);
@@ -341,6 +347,8 @@ public class OpenArrayAdapter<T> extends BaseAdapter implements Filterable, Swap
 			mObjects.set(positionOne, mObjects.get(positionTwo));
 			mObjects.set(positionTwo, temp);
 		}
+
+		Debug.verbose("after  " + mObjects);
 
 		if (mNotifyOnChange)
 			notifyDataSetChanged();

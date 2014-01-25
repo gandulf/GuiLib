@@ -142,14 +142,22 @@ public class FlipImageView extends ImageView implements View.OnClickListener, An
 
 	@Override
 	public void setImageResource(int resId) {
-		mDrawable = getContext().getResources().getDrawable(resId);
+		if (resId != 0) {
+			mDrawable = getContext().getResources().getDrawable(resId);
+		} else {
+			mDrawable = null;
+		}
 		if (!mIsFlipped)
 			super.setImageResource(resId);
 	}
 
 	@Override
 	public void setImageURI(Uri uri) {
-		mDrawable = ResUtil.getDrawableByUri(getContext(), uri);
+		if (uri != null) {
+			mDrawable = ResUtil.getDrawableByUri(getContext(), uri);
+		} else {
+			mDrawable = null;
+		}
 		if (!mIsFlipped) {
 			super.setImageURI(uri);
 		}

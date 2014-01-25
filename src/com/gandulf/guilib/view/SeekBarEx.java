@@ -154,11 +154,13 @@ public class SeekBarEx extends SeekBar {
 		super.setMax(getMax() + diff);
 		super.setProgress(getProgress() + diff);
 		this.min = min;
+		invalidate();
 	}
 
 	@Override
 	public synchronized void setMax(int max) {
 		super.setMax(max - getMin());
+		invalidate();
 	}
 
 	public int getValue() {

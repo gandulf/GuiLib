@@ -57,18 +57,15 @@ public class UnifiedPreferenceHelper {
 	}
 
 	/**
-	 * Default value for {@link Header#id Header.id} indicating that no
-	 * identifier value is set. All other values (including those below -1) are
-	 * valid.
+	 * Default value for {@link Header#id Header.id} indicating that no identifier value is set. All other values
+	 * (including those below -1) are valid.
 	 */
 	public static final long HEADER_ID_UNDEFINED = -1;
 
 	/**
-	 * Determines whether the simplified settings UI should be shown. This is
-	 * true if device doesn't have newer APIs like {@link PreferenceFragment},
-	 * or if forced via {@link onIsHidingHeaders}, or the device doesn't have an
-	 * extra-large screen. In these cases, a single-pane "simplified" settings
-	 * UI should be shown.
+	 * Determines whether the simplified settings UI should be shown. This is true if device doesn't have newer APIs
+	 * like {@link PreferenceFragment}, or if forced via {@link onIsHidingHeaders}, or the device doesn't have an
+	 * extra-large screen. In these cases, a single-pane "simplified" settings UI should be shown.
 	 */
 	@TargetApi(value = Build.VERSION_CODES.HONEYCOMB)
 	public boolean isSinglePane() {
@@ -89,9 +86,8 @@ public class UnifiedPreferenceHelper {
 	}
 
 	/**
-	 * Sets the header resource to be used when building headers. This must be
-	 * called before super.onCreate unless overriding both
-	 * {@link #onBuildHeaders(List)} and {@link #onBuildLegacyHeaders(List)}
+	 * Sets the header resource to be used when building headers. This must be called before super.onCreate unless
+	 * overriding both {@link #onBuildHeaders(List)} and {@link #onBuildLegacyHeaders(List)}
 	 * 
 	 * @param headerRes
 	 *            The id of the header resource
@@ -101,13 +97,10 @@ public class UnifiedPreferenceHelper {
 	}
 
 	/**
-	 * Returns the current name of the SharedPreferences file that preferences
-	 * managed by this will use. Wraps
-	 * {@link PreferenceManager#getSharedPreferencesName()} if single pane,
-	 * otherwise returns a locally cached String.
+	 * Returns the current name of the SharedPreferences file that preferences managed by this will use. Wraps
+	 * {@link PreferenceManager#getSharedPreferencesName()} if single pane, otherwise returns a locally cached String.
 	 * 
-	 * @return The name that can be passed to
-	 *         {@link Context#getSharedPreferences(String, int)}
+	 * @return The name that can be passed to {@link Context#getSharedPreferences(String, int)}
 	 */
 	@SuppressWarnings("deprecation")
 	public String getSharedPreferencesName() {
@@ -118,9 +111,8 @@ public class UnifiedPreferenceHelper {
 	}
 
 	/**
-	 * Sets the name of the SharedPreferences file that preferences managed by
-	 * this will use. Wraps {@link PreferenceManager#setSharedPreferencesName()}
-	 * if single pane, otherwise cache it for use by
+	 * Sets the name of the SharedPreferences file that preferences managed by this will use. Wraps
+	 * {@link PreferenceManager#setSharedPreferencesName()} if single pane, otherwise cache it for use by
 	 * {@link UnifiedPreferenceFragment}.
 	 * 
 	 * @param sharedPreferencesName
@@ -135,13 +127,10 @@ public class UnifiedPreferenceHelper {
 	}
 
 	/**
-	 * Returns the current mode of the SharedPreferences file that preferences
-	 * managed by this will use. Wraps
-	 * {@link PreferenceManager#getSharedPreferencesMode()} if single pane,
-	 * otherwise returns a locally cached int.
+	 * Returns the current mode of the SharedPreferences file that preferences managed by this will use. Wraps
+	 * {@link PreferenceManager#getSharedPreferencesMode()} if single pane, otherwise returns a locally cached int.
 	 * 
-	 * @return The mode that can be passed to
-	 *         {@link Context#getSharedPreferences(String, int)}
+	 * @return The mode that can be passed to {@link Context#getSharedPreferences(String, int)}
 	 */
 	@SuppressWarnings("deprecation")
 	public int getSharedPreferencesMode() {
@@ -152,9 +141,8 @@ public class UnifiedPreferenceHelper {
 	}
 
 	/**
-	 * Sets the mode of the SharedPreferences file that preferences managed by
-	 * this will use. Wraps {@link PreferenceManager#setSharedPreferencesMode()}
-	 * if single pane, otherwise cache it for use by
+	 * Sets the mode of the SharedPreferences file that preferences managed by this will use. Wraps
+	 * {@link PreferenceManager#setSharedPreferencesMode()} if single pane, otherwise cache it for use by
 	 * {@link UnifiedPreferenceFragment}.
 	 * 
 	 * @param sharedPreferencesMode
@@ -169,9 +157,8 @@ public class UnifiedPreferenceHelper {
 	}
 
 	/**
-	 * Shows the simplified settings UI if the device configuration if the
-	 * device configuration dictates that a simplified, single-pane UI should be
-	 * shown.
+	 * Shows the simplified settings UI if the device configuration if the device configuration dictates that a
+	 * simplified, single-pane UI should be shown.
 	 */
 	@SuppressWarnings("deprecation")
 	protected void onPostCreate(Bundle savedInstanceState) {
@@ -209,17 +196,14 @@ public class UnifiedPreferenceHelper {
 	}
 
 	/**
-	 * Called when the activity needs its list of headers built. By implementing
-	 * this and adding at least one item to the list, you will cause the
-	 * activity to run in its modern fragment mode. Note that this function may
-	 * not always be called; for example, if the activity has been asked to
-	 * display a particular fragment without the header list, there is no need
-	 * to build the headers.
+	 * Called when the activity needs its list of headers built. By implementing this and adding at least one item to
+	 * the list, you will cause the activity to run in its modern fragment mode. Note that this function may not always
+	 * be called; for example, if the activity has been asked to display a particular fragment without the header list,
+	 * there is no need to build the headers.
 	 * 
 	 * <p>
-	 * Typical implementations will use {@link #loadHeadersFromResource} to fill
-	 * in the list from a resource. For convenience this is done if a header
-	 * resource has been set with {@link #setHeaderRes(int)}.
+	 * Typical implementations will use {@link #loadHeadersFromResource} to fill in the list from a resource. For
+	 * convenience this is done if a header resource has been set with {@link #setHeaderRes(int)}.
 	 * 
 	 * @param target
 	 *            The list in which to place the headers.
@@ -236,9 +220,8 @@ public class UnifiedPreferenceHelper {
 	 * Called when the activity needs its list of legacy headers built.
 	 * 
 	 * <p>
-	 * Typical implementations will use {@link #loadLegacyHeadersFromResource}
-	 * to fill in the list from a resource. For convenience this is done if a
-	 * header resource has been set with {@link #setHeaderRes(int)}.
+	 * Typical implementations will use {@link #loadLegacyHeadersFromResource} to fill in the list from a resource. For
+	 * convenience this is done if a header resource has been set with {@link #setHeaderRes(int)}.
 	 * 
 	 * @param target
 	 *            The list in which to place the legacy headers.
@@ -250,9 +233,8 @@ public class UnifiedPreferenceHelper {
 	}
 
 	/**
-	 * Bind the summaries of EditText/List/Dialog/Ringtone preferences to their
-	 * values. When their values change, their summaries are updated to reflect
-	 * the new value, per the Android Design guidelines.
+	 * Bind the summaries of EditText/List/Dialog/Ringtone preferences to their values. When their values change, their
+	 * summaries are updated to reflect the new value, per the Android Design guidelines.
 	 */
 	@SuppressWarnings("deprecation")
 	public void onBindPreferenceSummariesToValues() {
@@ -260,8 +242,7 @@ public class UnifiedPreferenceHelper {
 	}
 
 	/**
-	 * Parse the given XML file as a header description, adding each parsed
-	 * Header into the target list.
+	 * Parse the given XML file as a header description, adding each parsed Header into the target list.
 	 * 
 	 * @param resid
 	 *            The XML resource to load and parse.
@@ -301,7 +282,8 @@ public class UnifiedPreferenceHelper {
 
 					TypedArray sa = mActivity.getResources().obtainAttributes(attrs, R.styleable.PreferenceHeader);
 					header.id = sa.getResourceId(R.styleable.PreferenceHeader_id, (int) HEADER_ID_UNDEFINED);
-					TypedValue tv = sa.peekValue(R.styleable.PreferenceHeader_title);
+					TypedValue tv = sa.peekValue(R.styleable.PreferenceHeader_android_title);
+
 					if (tv != null && tv.type == TypedValue.TYPE_STRING) {
 						if (tv.resourceId != 0) {
 							header.titleRes = tv.resourceId;
@@ -333,7 +315,7 @@ public class UnifiedPreferenceHelper {
 							header.breadCrumbShortTitle = tv.string;
 						}
 					}
-					header.iconRes = sa.getResourceId(R.styleable.PreferenceHeader_icon, 0);
+					header.iconRes = sa.getResourceId(R.styleable.PreferenceHeader_android_icon, 0);
 					header.fragment = sa.getString(R.styleable.PreferenceHeader_fragment);
 
 					if (curBundle == null) {
@@ -389,8 +371,7 @@ public class UnifiedPreferenceHelper {
 	}
 
 	/**
-	 * Parse the given XML file as a header description, adding each parsed
-	 * LegacyHeader into the target list.
+	 * Parse the given XML file as a header description, adding each parsed LegacyHeader into the target list.
 	 * 
 	 * @param resid
 	 *            The XML resource to load and parse.
@@ -426,7 +407,7 @@ public class UnifiedPreferenceHelper {
 					LegacyHeader header = new LegacyHeader();
 
 					TypedArray sa = mActivity.getResources().obtainAttributes(attrs, R.styleable.PreferenceHeader);
-					TypedValue tv = sa.peekValue(R.styleable.PreferenceHeader_title);
+					TypedValue tv = sa.peekValue(R.styleable.PreferenceHeader_android_title);
 					if (tv != null && tv.type == TypedValue.TYPE_STRING) {
 						if (tv.resourceId != 0) {
 							header.titleRes = tv.resourceId;

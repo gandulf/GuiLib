@@ -48,6 +48,7 @@ import android.widget.ListView;
  * https://github.com/android/platform_frameworks_base/blob/master/core/java/android/widget/GridView.java
  * </pre>
  */
+@SuppressWarnings("unused")
 public class GridViewCompat extends GridView {
 	private static final String TAG = GridViewCompat.class.getSimpleName();
 	/**
@@ -182,6 +183,7 @@ public class GridViewCompat extends GridView {
 		/**
 		 * Gets the Object mapped from the specified key, or the specified Object if no such mapping has been made.
 		 */
+		@SuppressWarnings("unchecked")
 		public E get(long key, E valueIfKeyNotFound) {
 			int i = binarySearch(mKeys, 0, mSize, key);
 
@@ -319,6 +321,7 @@ public class GridViewCompat extends GridView {
 		 * Given an index in the range <code>0...size()-1</code>, returns the value from the <code>index</code>th
 		 * key-value mapping that this SparseArray stores.
 		 */
+		@SuppressWarnings("unchecked")
 		public E valueAt(int index) {
 			if (mGarbage) {
 				gc();
@@ -541,6 +544,7 @@ public class GridViewCompat extends GridView {
 		 * Returns an empty array of the specified type. The intent is that it will return the same empty array every
 		 * time to avoid reallocation, although this is not guaranteed.
 		 */
+		@SuppressWarnings("unchecked")
 		public static <T> T[] emptyArray(Class<T> kind) {
 			if (kind == Object.class) {
 				return (T[]) EMPTY;

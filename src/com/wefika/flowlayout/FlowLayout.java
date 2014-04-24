@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Blaž Šolar
+ * Copyright 2013 Blaz Solar
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import android.view.ViewGroup;
 import com.gandulf.guilib.R;
 
 /**
- * User: Blaž Šolar Date: 5/6/13 Time: 8:17 PM
+ * User: Blaz Solar Date: 5/6/13 Time: 8:17 PM
  */
 public class FlowLayout extends ViewGroup {
 

@@ -101,7 +101,7 @@ public class VersionInfoDialog extends AlertDialog {
 		setTitle(R.string.news_title);
 
 		webView = new WebView(getContext());
-		webView.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+		webView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 
 		setButton(BUTTON_POSITIVE, getContext().getString(R.string.label_ok), new DialogInterface.OnClickListener() {
 			@Override

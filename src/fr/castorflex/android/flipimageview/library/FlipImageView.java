@@ -69,6 +69,8 @@ public class FlipImageView extends ImageView implements View.OnClickListener, An
 
 	private boolean mIsRotationReversed;
 
+	private boolean mIsFlippable = true;
+
 	public FlipImageView(Context context) {
 		super(context);
 		init(context, null, R.attr.flipImageViewStyle);
@@ -123,7 +125,7 @@ public class FlipImageView extends ImageView implements View.OnClickListener, An
 	@Deprecated
 	public void setBackgroundDrawable(Drawable background) {
 		mBackground = background;
-		if (!mIsFlipped) {
+		if (!mIsFlippable || !mIsFlipped) {
 			super.setBackgroundDrawable(background);
 		}
 	}
@@ -136,7 +138,7 @@ public class FlipImageView extends ImageView implements View.OnClickListener, An
 
 	public void setImageDrawable(Drawable drawable) {
 		mDrawable = drawable;
-		if (!mIsFlipped)
+		if (!mIsFlippable || !mIsFlipped)
 			super.setImageDrawable(mDrawable);
 	}
 
@@ -147,7 +149,7 @@ public class FlipImageView extends ImageView implements View.OnClickListener, An
 		} else {
 			mDrawable = null;
 		}
-		if (!mIsFlipped)
+		if (!mIsFlippable || !mIsFlipped)
 			super.setImageResource(resId);
 	}
 
@@ -158,7 +160,7 @@ public class FlipImageView extends ImageView implements View.OnClickListener, An
 		} else {
 			mDrawable = null;
 		}
-		if (!mIsFlipped) {
+		if (!mIsFlippable || !mIsFlipped) {
 			super.setImageURI(uri);
 		}
 	}
@@ -207,6 +209,17 @@ public class FlipImageView extends ImageView implements View.OnClickListener, An
 		return mIsFlipping;
 	}
 
+	public boolean isFlippable() {
+		return mIsFlippable;
+	}
+
+	public void setFlippable(boolean v) {
+		if (!v) {
+			setFlipped(false, false);
+		}
+		mIsFlippable = v;
+	}
+
 	public boolean isRotationReversed() {
 		return mIsRotationReversed;
 	}
@@ -224,11 +237,13 @@ public class FlipImageView extends ImageView implements View.OnClickListener, An
 	}
 
 	public void setFlipped(boolean flipped) {
-		setFlipped(flipped, mIsDefaultAnimated);
+		if (mIsFlippable)
+			setFlipped(flipped, mIsDefaultAnimated);
 	}
 
 	public void setFlipped(boolean flipped, boolean animated) {
-		if (flipped != mIsFlipped) {
+
+		if (mIsFlippable && flipped != mIsFlipped) {
 			toggleFlip(animated);
 		}
 	}
@@ -238,15 +253,17 @@ public class FlipImageView extends ImageView implements View.OnClickListener, An
 	}
 
 	public void toggleFlip(boolean animated) {
-		if (animated) {
-			mAnimation.setToBackground(mIsFlipped ? mBackground : mFlippedBackground);
-			mAnimation.setToDrawable(mIsFlipped ? mDrawable : mFlippedDrawable);
-			startAnimation(mAnimation);
-		} else {
-			super.setBackgroundDrawable(mIsFlipped ? mBackground : mFlippedBackground);
-			super.setImageDrawable(mIsFlipped ? mDrawable : mFlippedDrawable);
+		if (mIsFlippable) {
+			if (animated) {
+				mAnimation.setToBackground(mIsFlipped ? mBackground : mFlippedBackground);
+				mAnimation.setToDrawable(mIsFlipped ? mDrawable : mFlippedDrawable);
+				startAnimation(mAnimation);
+			} else {
+				super.setBackgroundDrawable(mIsFlipped ? mBackground : mFlippedBackground);
+				super.setImageDrawable(mIsFlipped ? mDrawable : mFlippedDrawable);
+			}
+			mIsFlipped = !mIsFlipped;
 		}
-		mIsFlipped = !mIsFlipped;
 	}
 
 	public void setOnFlipListener(OnFlipListener listener) {
@@ -256,7 +273,7 @@ public class FlipImageView extends ImageView implements View.OnClickListener, An
 	@Override
 	public void onClick(View v) {
 		toggleFlip();
-		if (mListener != null) {
+		if (mIsFlippable && mListener != null) {
 			mListener.onClick(this);
 		}
 	}

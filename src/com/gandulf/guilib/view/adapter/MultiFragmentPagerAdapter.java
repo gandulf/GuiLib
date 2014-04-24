@@ -79,7 +79,7 @@ public abstract class MultiFragmentPagerAdapter extends PagerAdapter {
 			Fragment fragment = mFragmentManager.findFragmentByTag(name);
 
 			FrameLayout fragmentView = new FrameLayout(mContext);
-			LayoutParams layoutParams = new LayoutParams(0, LayoutParams.FILL_PARENT, 1);
+			LayoutParams layoutParams = new LayoutParams(0, LayoutParams.MATCH_PARENT, 1);
 			fragmentView.setLayoutParams(layoutParams);
 			fragmentView.setId(containerId);
 			v.addView(fragmentView, i);

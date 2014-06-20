@@ -35,6 +35,10 @@ public class FlowLayout extends ViewGroup {
 
 	private int mGravity = Gravity.START | Gravity.TOP;
 
+	private List<List<View>> lines = new ArrayList<List<View>>();
+	private List<Integer> lineHeights = new ArrayList<Integer>();
+	private List<Integer> lineMargins = new ArrayList<Integer>();
+
 	public FlowLayout(Context context) {
 		super(context);
 	}
@@ -59,9 +63,9 @@ public class FlowLayout extends ViewGroup {
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 
-		List<List<View>> lines = new ArrayList<List<View>>();
-		List<Integer> lineHeights = new ArrayList<Integer>();
-		List<Integer> lineMargins = new ArrayList<Integer>();
+		lines.clear();
+		lineHeights.clear();
+		lineMargins.clear();
 
 		int width = getWidth();
 		int height = getHeight();
@@ -204,6 +208,9 @@ public class FlowLayout extends ViewGroup {
 			top += lineHeight;
 		}
 
+		lines.clear();
+		lineHeights.clear();
+		lineMargins.clear();
 	}
 
 	@Override

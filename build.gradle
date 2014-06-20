@@ -21,13 +21,13 @@ tasks.withType(Compile) {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:19.+'       
-    compile fileTree(dir: 'libs', include: '*.jar')
+    compile 'com.android.support:support-v4:19+'       
+    compile fileTree(dir: 'libs', include: '*.jar', exclude: 'android-support-v4.jar')
 }
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.3"
+    buildToolsVersion "19.1"
 
     sourceSets {
         main {

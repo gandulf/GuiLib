@@ -95,22 +95,26 @@ public class FlipImageView extends ImageView implements View.OnClickListener, An
 		mFlippedDrawable = a.getDrawable(R.styleable.FlipImageView_flipDrawable);
 		int duration = a.getInt(R.styleable.FlipImageView_flipDuration, 500);
 		int interpolatorResId = a.getResourceId(R.styleable.FlipImageView_flipInterpolator, 0);
-		Interpolator interpolator = interpolatorResId > 0 ? AnimationUtils.loadInterpolator(context, interpolatorResId)
-				: fDefaultInterpolator;
 
-		int rotations = a.getInteger(R.styleable.FlipImageView_flipRotations, FLAG_ROTATION_Y);
-		mIsRotationXEnabled = (rotations & FLAG_ROTATION_X) != 0;
-		mIsRotationYEnabled = (rotations & FLAG_ROTATION_Y) != 0;
-		mIsRotationZEnabled = (rotations & FLAG_ROTATION_Z) != 0;
+		if (!isInEditMode()) {
+			Interpolator interpolator = interpolatorResId > 0 ? AnimationUtils.loadInterpolator(context,
+					interpolatorResId) : fDefaultInterpolator;
+
+			int rotations = a.getInteger(R.styleable.FlipImageView_flipRotations, FLAG_ROTATION_Y);
+			mIsRotationXEnabled = (rotations & FLAG_ROTATION_X) != 0;
+			mIsRotationYEnabled = (rotations & FLAG_ROTATION_Y) != 0;
+			mIsRotationZEnabled = (rotations & FLAG_ROTATION_Z) != 0;
+
+			mAnimation = new FlipAnimator();
+			mAnimation.setAnimationListener(this);
+			mAnimation.setInterpolator(interpolator);
+			mAnimation.setDuration(duration);
+
+			mIsRotationReversed = a.getBoolean(R.styleable.FlipImageView_reverseRotation, false);
+		}
 
 		mDrawable = getDrawable();
 		mBackground = getBackground();
-		mIsRotationReversed = a.getBoolean(R.styleable.FlipImageView_reverseRotation, false);
-
-		mAnimation = new FlipAnimator();
-		mAnimation.setAnimationListener(this);
-		mAnimation.setInterpolator(interpolator);
-		mAnimation.setDuration(duration);
 
 		setOnClickListener(this);
 

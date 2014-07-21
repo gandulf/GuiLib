@@ -801,6 +801,10 @@ public class SlidingUpPanelLayout extends ViewGroup {
 		return mCanSlide;
 	}
 
+	public boolean isSliding() {
+		return mDragHelper.getViewDragState() != ViewDragHelper.STATE_IDLE;
+	}
+
 	public boolean isPaneVisible() {
 		if (getChildCount() < 2) {
 			return false;

@@ -111,8 +111,9 @@ public class Downloader extends AbstractDownloader implements DialogInterface.On
 	public void close() {
 		todo.clear();
 		if (dialog != null && dialog.getWindow() != null) {
-			if (dialog.isShowing())
+			if (dialog.isShowing()) {
 				dialog.dismiss();
+			}
 			dialog = null;
 		}
 

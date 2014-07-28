@@ -13,6 +13,10 @@ import com.gandulf.guilib.view.ViewScroller.ScrollingListener;
 
 public class SeekBarEx extends SeekBar {
 
+	public interface SeekBarLabelRenderer {
+		public String render(int value);
+	}
+
 	private class OnSeekBarChangeListenerWrapper implements OnSeekBarChangeListener, ScrollingListener {
 
 		private OnSeekBarChangeListener wrapped;
@@ -46,7 +50,11 @@ public class SeekBarEx extends SeekBar {
 			}
 
 			if (label != null) {
-				label.setText(Integer.toString(getValue()));
+				if (labelRenderer != null) {
+					label.setText(labelRenderer.render(getValue()));
+				} else {
+					label.setText(Integer.toString(getValue()));
+				}
 			}
 			if (wrapped != null) {
 				wrapped.onProgressChanged(seekBar, progress, fromUser);
@@ -87,7 +95,11 @@ public class SeekBarEx extends SeekBar {
 			}
 
 			if (label != null) {
-				label.setText(Integer.toString(getValue()));
+				if (labelRenderer != null) {
+					label.setText(labelRenderer.render(getValue()));
+				} else {
+					label.setText(Integer.toString(getValue()));
+				}
 			}
 
 			if (wrapped != null) {
@@ -123,6 +135,8 @@ public class SeekBarEx extends SeekBar {
 	private PopupWindow popupWindow;
 
 	private OnSeekBarChangeListenerWrapper wrapper;
+
+	private SeekBarLabelRenderer labelRenderer;
 
 	private int min = 0;
 	private int stepSize = 1;
@@ -187,6 +201,14 @@ public class SeekBarEx extends SeekBar {
 	@Override
 	public void setOnSeekBarChangeListener(OnSeekBarChangeListener l) {
 		wrapper.setWrapped(l);
+	}
+
+	public SeekBarLabelRenderer getLabelRenderer() {
+		return labelRenderer;
+	}
+
+	public void setLabelRenderer(SeekBarLabelRenderer labelRenderer) {
+		this.labelRenderer = labelRenderer;
 	}
 
 }

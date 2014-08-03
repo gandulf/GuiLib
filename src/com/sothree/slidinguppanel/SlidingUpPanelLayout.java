@@ -651,7 +651,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
 			} else if (lp.height == LayoutParams.MATCH_PARENT) {
 				childHeightSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
 			} else {
-				childHeightSpec = MeasureSpec.makeMeasureSpec(lp.height, MeasureSpec.EXACTLY);
+				childHeightSpec = MeasureSpec.makeMeasureSpec(Math.min(height, lp.height), MeasureSpec.EXACTLY);
 			}
 
 			if (child == mSlideableView) {
@@ -976,6 +976,8 @@ public class SlidingUpPanelLayout extends ViewGroup {
 				return;
 			int newTop = computePanelTopPosition(0.0f) + (mIsSlidingUp ? +mPanelHeight : -mPanelHeight);
 			smoothSlideTo(computeSlideOffset(newTop), 0);
+
+			mSlideableView.setVisibility(View.GONE);
 		}
 	}
 

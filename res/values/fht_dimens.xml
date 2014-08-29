@@ -2,5 +2,7 @@
 <resources>
     <item name="floatinghintedittext_hint_scale" type="dimen" format="float">0.6</item>
     <item name="floatinghintedittext_animation_steps" type="dimen" format="integer">6</item>
+    
+    <dimen name="floatinghintedittext_hint_size">9sp</dimen> 
 </resources>
 

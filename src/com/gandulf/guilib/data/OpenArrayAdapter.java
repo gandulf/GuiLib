@@ -18,7 +18,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.gandulf.guilib.util.Debug;
-import com.haarman.listviewanimations.view.DynamicListView.Swappable;
+import com.nhaarman.listviewanimations.util.Swappable;
 
 /**
  * A ListAdapter that manages a ListView backed by an array of arbitrary objects. By default this class expects that the
@@ -50,12 +50,12 @@ public class OpenArrayAdapter<T> extends BaseAdapter implements Filterable, Swap
 	/**
 	 * The resource indicating what views to inflate to display the content of this array adapter.
 	 */
-	private int mResource;
+	protected int mResource;
 
 	/**
 	 * The resource indicating what views to inflate to display the content of this array adapter in a drop down widget.
 	 */
-	private int mDropDownResource;
+	protected int mDropDownResource;
 
 	/**
 	 * If the inflated resource is not a TextView, {@link #mFieldId} is used to find a TextView inside the inflated
@@ -319,11 +319,6 @@ public class OpenArrayAdapter<T> extends BaseAdapter implements Filterable, Swap
 	}
 
 	@Override
-	public boolean isSwapable(AdapterView<?> list, View view, int aposition) {
-		return true;
-	}
-
-	@Override
 	public void swapItems(int positionOne, int positionTwo) {
 		Debug.verbose("swap " + positionOne + ", " + positionTwo);
 		Debug.verbose("before " + mObjects);
@@ -407,7 +402,10 @@ public class OpenArrayAdapter<T> extends BaseAdapter implements Filterable, Swap
 	 */
 	@Override
 	public T getItem(int position) {
-		return mObjects.get(position);
+		if (position >= 0 && position < mObjects.size())
+			return mObjects.get(position);
+		else
+			return null;
 	}
 
 	public List<T> getItems() {

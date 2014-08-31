@@ -5,7 +5,7 @@
     </style>
     
     <style name="PopupText">
-        <item name="android:textSize">80sp</item>
+        <item name="android:textSize">64sp</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:shadowColor">#000000</item>

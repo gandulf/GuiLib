@@ -929,7 +929,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
 	}
 
 	public boolean isPanelSliding() {
-		return mSlideOffset != 0.0f;
+		return mSlideOffset != 0.0f && mSlideOffset != 1.0f;
 	}
 
 	/**

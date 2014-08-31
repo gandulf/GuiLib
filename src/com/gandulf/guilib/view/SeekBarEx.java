@@ -41,9 +41,8 @@ public class SeekBarEx extends SeekBar {
 		public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 			if (popupWindow != null && popupWindow.isShowing()) {
 				((TextView) popupWindow.getContentView()).setText(String.valueOf(progress + getMin()));
-
 				int offsetX = (int) (seekBar.getWidth() * (seekBar.getProgress() / (float) getMax()));
-				offsetX -= popupWindow.getWidth() / 2;
+				offsetX -= popupWindow.getContentView().getWidth() / 2;
 				int distance = currentOffsetX - offsetX;
 
 				scroller.scroll(distance, 0);
@@ -67,8 +66,7 @@ public class SeekBarEx extends SeekBar {
 				TextView textView = (TextView) inflate(getContext(), R.layout.popup_text, null);
 				popupWindow = new PopupWindow(textView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 				popupWindow.setContentView(textView);
-				popupWindow.setWidth(200);
-				popupWindow.setHeight(200);
+				textView.measure(0, 0);
 				popupWindow.setBackgroundDrawable(getContext().getResources().getDrawable(R.drawable.popup_background));
 			}
 		}
@@ -78,7 +76,7 @@ public class SeekBarEx extends SeekBar {
 			initPopupwindow();
 
 			currentOffsetX = (int) (seekBar.getWidth() * (seekBar.getProgress() / (float) getMax()));
-			currentOffsetX -= popupWindow.getWidth() / 2;
+			currentOffsetX -= popupWindow.getContentView().getMeasuredWidth() / 2;
 
 			popupWindow.showAsDropDown(seekBar, currentOffsetX, 0);
 

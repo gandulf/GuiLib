@@ -7,8 +7,6 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
 
-import com.rokoder.android.lib.support.v4.widget.GridViewCompat;
-
 public class ListViewCompat {
 
 	private ListViewCompat() {
@@ -19,9 +17,7 @@ public class ListViewCompat {
 	public static SparseBooleanArray getCheckedItemPositions(AdapterView<?> parent) {
 
 		SparseBooleanArray checked = null;
-		if (parent instanceof GridViewCompat)
-			checked = ((GridViewCompat) parent).getCheckedItemPositions();
-		else if (parent instanceof ListView) {
+		if (parent instanceof ListView) {
 			checked = ((ListView) parent).getCheckedItemPositions();
 		} else if (parent instanceof GridView) {
 			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
@@ -36,9 +32,7 @@ public class ListViewCompat {
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public static boolean isItemChecked(AdapterView<?> parent, int position) {
-		if (parent instanceof GridViewCompat)
-			return ((GridViewCompat) parent).isItemChecked(position);
-		else if (parent instanceof ListView) {
+		if (parent instanceof ListView) {
 			return ((ListView) parent).isItemChecked(position);
 		} else if (parent instanceof GridView) {
 			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
@@ -53,9 +47,7 @@ public class ListViewCompat {
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public static void setItemChecked(AdapterView<?> parent, int position, boolean checked) {
-		if (parent instanceof GridViewCompat)
-			((GridViewCompat) parent).setItemChecked(position, checked);
-		else if (parent instanceof ListView) {
+		if (parent instanceof ListView) {
 			((ListView) parent).setItemChecked(position, checked);
 		} else if (parent instanceof GridView) {
 			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {

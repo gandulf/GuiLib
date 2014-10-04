@@ -59,9 +59,4 @@ public class DownloaderGinger extends AbstractDownloader {
 
 	}
 
-	static class FileInfo {
-		String inFilePath;
-		String outFilePath;
-	}
-
 }

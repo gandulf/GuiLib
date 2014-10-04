@@ -26,6 +26,16 @@ import android.content.Context;
  */
 public abstract class AbstractDownloader {
 
+	public static final String ACTION_UNZIP_COMPLETE = "com.dsatab.intent.action.ACTION_UNZIP_COMPLETE";
+
+	public static final String INTENT_RESULT = "result";
+	public static final String INTENT_EXCEPTION = "exception";
+	public static final String INTENT_ERROR = "error";
+
+	public static final int RESULT_OK = 1;
+	public static final int RESULT_ERROR = 2;
+	public static final int RESULT_CANCELED = 3;
+
 	protected Context context;
 
 	protected String basePath = null;

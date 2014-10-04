@@ -1,9 +1,9 @@
 package com.gandulf.guilib.view;
 
-import kankan.wheel.widget.WheelView;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -26,7 +26,7 @@ public class SeekBarEx extends SeekBar {
 
 		public OnSeekBarChangeListenerWrapper(OnSeekBarChangeListener wrapped) {
 			this.wrapped = wrapped;
-			scroller = new ViewScroller(getContext(), this, WheelView.HORIZONTAL);
+			scroller = new ViewScroller(getContext(), this, LinearLayout.HORIZONTAL);
 		}
 
 		public OnSeekBarChangeListener getWrapped() {

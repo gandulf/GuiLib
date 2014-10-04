@@ -1,10 +1,10 @@
 package com.gandulf.guilib.view;
 
-import kankan.wheel.widget.WheelView;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.view.animation.Interpolator;
+import android.widget.LinearLayout;
 import android.widget.Scroller;
 
 /**
@@ -106,7 +106,7 @@ public class ViewScroller {
 
 		lastScrollY = 0;
 
-		if (orientation == WheelView.VERTICAL) {
+		if (orientation == LinearLayout.VERTICAL) {
 			scroller.startScroll(0, 0, 0, distance, time != 0 ? time : SCROLLING_DURATION);
 		} else {
 			scroller.startScroll(0, 0, distance, 0, time != 0 ? time : SCROLLING_DURATION);
@@ -151,7 +151,7 @@ public class ViewScroller {
 		public void handleMessage(Message msg) {
 			scroller.computeScrollOffset();
 			int currY, finalY, delta;
-			if (orientation == WheelView.VERTICAL) {
+			if (orientation == LinearLayout.VERTICAL) {
 				currY = scroller.getCurrY();
 				finalY = scroller.getFinalY();
 			} else {

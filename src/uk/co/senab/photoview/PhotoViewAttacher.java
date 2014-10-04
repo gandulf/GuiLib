@@ -35,16 +35,14 @@ public class PhotoViewAttacher implements View.OnTouchListener, VersionedGesture
 	static final String LOG_TAG = "PhotoViewAttacher";
 
 	/**
-	 * Interface definition for a callback to be invoked when the internal
-	 * Matrix has changed for this View.
+	 * Interface definition for a callback to be invoked when the internal Matrix has changed for this View.
 	 * 
 	 * @author Chris Banes
 	 */
 	public static interface OnMatrixChangedListener {
 		/**
-		 * Callback for when the Matrix displaying the Drawable has changed.
-		 * This could be because the View's bounds have changed, or the user has
-		 * zoomed.
+		 * Callback for when the Matrix displaying the Drawable has changed. This could be because the View's bounds
+		 * have changed, or the user has zoomed.
 		 * 
 		 * @param rect
 		 *            - Rectangle displaying the Drawable's new bounds.
@@ -53,26 +51,22 @@ public class PhotoViewAttacher implements View.OnTouchListener, VersionedGesture
 	}
 
 	/**
-	 * Interface definition for a callback to be invoked when the Photo is
-	 * tapped with a single tap.
+	 * Interface definition for a callback to be invoked when the Photo is tapped with a single tap.
 	 * 
 	 * @author Chris Banes
 	 */
 	public static interface OnPhotoTapListener {
 
 		/**
-		 * A callback to receive where the user taps on a photo. You will only
-		 * receive a callback if the user taps on the actual photo, tapping on
-		 * 'whitespace' will be ignored.
+		 * A callback to receive where the user taps on a photo. You will only receive a callback if the user taps on
+		 * the actual photo, tapping on 'whitespace' will be ignored.
 		 * 
 		 * @param view
 		 *            - View the user tapped
 		 * @param x
-		 *            - where the user tapped from the left, as percentage of
-		 *            the Drawable width.
+		 *            - where the user tapped from the left, as percentage of the Drawable width.
 		 * @param y
-		 *            - where the user tapped from the top, as percentage of the
-		 *            Drawable height.
+		 *            - where the user tapped from the top, as percentage of the Drawable height.
 		 */
 		void onPhotoTap(View view, float x, float y);
 	}
@@ -219,7 +213,7 @@ public class PhotoViewAttacher implements View.OnTouchListener, VersionedGesture
 	static final int EDGE_RIGHT = 1;
 	static final int EDGE_BOTH = 2;
 
-	private static final float MAX_ZOOM = 5.0f;
+	private static final float MAX_ZOOM = 8.0f;
 	private static final float MID_ZOOM = 1.75f;
 	private static final float MIN_ZOOM = 1.0f;
 
@@ -284,9 +278,8 @@ public class PhotoViewAttacher implements View.OnTouchListener, VersionedGesture
 	}
 
 	/**
-	 * Gets the Display Rectangle of the currently displayed Drawable. The
-	 * Rectangle is relative to this View and includes all scaling and
-	 * translations.
+	 * Gets the Display Rectangle of the currently displayed Drawable. The Rectangle is relative to this View and
+	 * includes all scaling and translations.
 	 * 
 	 * @return - RectF of Displayed Drawable
 	 */
@@ -346,13 +339,11 @@ public class PhotoViewAttacher implements View.OnTouchListener, VersionedGesture
 			checkAndDisplayMatrix();
 
 			/**
-			 * Here we decide whether to let the ImageView's parent to start
-			 * taking over the touch event.
+			 * Here we decide whether to let the ImageView's parent to start taking over the touch event.
 			 * 
-			 * We never want the parent to take over if we're scaling. We then
-			 * check the edge we're on, and the direction of the scroll (i.e. if
-			 * we're pulling against the edge, aka 'overscrolling', let the
-			 * parent take over).
+			 * We never want the parent to take over if we're scaling. We then check the edge we're on, and the
+			 * direction of the scroll (i.e. if we're pulling against the edge, aka 'overscrolling', let the parent take
+			 * over).
 			 */
 			if (!mScaleDragDetector.isScaling()) {
 				if (mScrollEdge == EDGE_BOTH || (mScrollEdge == EDGE_LEFT && dx >= 1f)
@@ -386,11 +377,9 @@ public class PhotoViewAttacher implements View.OnTouchListener, VersionedGesture
 			final int left = mImageView.getLeft();
 
 			/**
-			 * We need to check whether the ImageView's bounds have changed.
-			 * This would be easier if we targeted API 11+ as we could just use
-			 * View.OnLayoutChangeListener. Instead we have to replicate the
-			 * work, keeping track of the ImageView's bounds and then checking
-			 * if the values change.
+			 * We need to check whether the ImageView's bounds have changed. This would be easier if we targeted API 11+
+			 * as we could just use View.OnLayoutChangeListener. Instead we have to replicate the work, keeping track of
+			 * the ImageView's bounds and then checking if the values change.
 			 */
 			if (top != mIvTop || bottom != mIvBottom || left != mIvLeft || right != mIvRight) {
 				// Update our base matrix, as the bounds have changed
@@ -482,9 +471,8 @@ public class PhotoViewAttacher implements View.OnTouchListener, VersionedGesture
 	}
 
 	/**
-	 * Controls how the image should be resized or moved to match the size of
-	 * the ImageView. Any scaling or panning will happen within the confines of
-	 * this {@link ScaleType}.
+	 * Controls how the image should be resized or moved to match the size of the ImageView. Any scaling or panning will
+	 * happen within the confines of this {@link ScaleType}.
 	 * 
 	 * @param scaleType
 	 *            - The desired scaling mode.
@@ -499,8 +487,8 @@ public class PhotoViewAttacher implements View.OnTouchListener, VersionedGesture
 	}
 
 	/**
-	 * Register a callback to be invoked when the Matrix has changed for this
-	 * View. An example would be the user panning or scaling the Photo.
+	 * Register a callback to be invoked when the Matrix has changed for this View. An example would be the user panning
+	 * or scaling the Photo.
 	 * 
 	 * @param listener
 	 *            - Listener to be registered.
@@ -510,8 +498,7 @@ public class PhotoViewAttacher implements View.OnTouchListener, VersionedGesture
 	}
 
 	/**
-	 * Register a callback to be invoked when the Photo displayed by this View
-	 * is tapped with a single tap.
+	 * Register a callback to be invoked when the Photo displayed by this View is tapped with a single tap.
 	 * 
 	 * @param listener
 	 *            - Listener to be registered.
@@ -521,8 +508,8 @@ public class PhotoViewAttacher implements View.OnTouchListener, VersionedGesture
 	}
 
 	/**
-	 * Allows you to enable/disable the zoom functionality on the ImageView.
-	 * When disable the ImageView reverts to using the FIT_CENTER matrix.
+	 * Allows you to enable/disable the zoom functionality on the ImageView. When disable the ImageView reverts to using
+	 * the FIT_CENTER matrix.
 	 * 
 	 * @param zoomable
 	 *            - Whether the zoom functionality is enabled.
@@ -582,8 +569,8 @@ public class PhotoViewAttacher implements View.OnTouchListener, VersionedGesture
 
 	private void checkImageViewScaleType() {
 		/**
-		 * PhotoView's getScaleType() will just divert to this.getScaleType() so
-		 * only call if we're not attached to a PhotoView.
+		 * PhotoView's getScaleType() will just divert to this.getScaleType() so only call if we're not attached to a
+		 * PhotoView.
 		 */
 		if (!(mImageView instanceof PhotoView)) {
 			if (mImageView.getScaleType() != ScaleType.MATRIX) {
@@ -696,9 +683,8 @@ public class PhotoViewAttacher implements View.OnTouchListener, VersionedGesture
 	private void setImageViewScaleTypeMatrix() {
 		if (mImageView instanceof PhotoView) {
 			/**
-			 * PhotoView sets it's own ScaleType to Matrix, then diverts all
-			 * calls setScaleType to this.setScaleType. Basically we don't need
-			 * to do anything here
+			 * PhotoView sets it's own ScaleType to Matrix, then diverts all calls setScaleType to this.setScaleType.
+			 * Basically we don't need to do anything here
 			 */
 		} else {
 			mImageView.setScaleType(ScaleType.MATRIX);

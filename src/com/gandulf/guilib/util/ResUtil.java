@@ -50,10 +50,10 @@ public class ResUtil {
 		return value;
 	}
 
-	public static String loadResToString(int resId, Context ctx) {
+	public static String loadResToString(int resId, Resources res) {
 
 		try {
-			InputStream is = ctx.getResources().openRawResource(resId);
+			InputStream is = res.openRawResource(resId);
 
 			byte[] buffer = new byte[4096];
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();

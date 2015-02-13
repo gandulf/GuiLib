@@ -62,6 +62,11 @@ public class SeekBarEx extends SeekBar {
 		}
 
 		private void initPopupwindow() {
+			if (!showOverlay) {
+				popupWindow = null;
+				return;
+			}
+
 			if (popupWindow == null) {
 				TextView textView = (TextView) inflate(getContext(), R.layout.popup_text, null);
 				popupWindow = new PopupWindow(textView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -75,11 +80,13 @@ public class SeekBarEx extends SeekBar {
 		public void onStartTrackingTouch(SeekBar seekBar) {
 			initPopupwindow();
 
-			currentOffsetX = (int) (seekBar.getWidth() * (seekBar.getProgress() / (float) getMax()));
-			currentOffsetX -= popupWindow.getContentView().getMeasuredWidth() / 2;
+			if (popupWindow != null) {
+				currentOffsetX = (int) (seekBar.getWidth() * (seekBar.getProgress() / (float) getMax()));
+				currentOffsetX -= popupWindow.getContentView().getMeasuredWidth() / 2;
 
-			popupWindow.showAsDropDown(seekBar, currentOffsetX, 0);
+				popupWindow.showAsDropDown(seekBar, currentOffsetX, 0);
 
+			}
 			if (wrapped != null) {
 				wrapped.onStartTrackingTouch(seekBar);
 			}
@@ -136,6 +143,7 @@ public class SeekBarEx extends SeekBar {
 
 	private SeekBarLabelRenderer labelRenderer;
 
+	private boolean showOverlay;
 	private int min = 0;
 	private int stepSize = 1;
 

@@ -174,7 +174,7 @@ public class VersionInfoDialog extends AlertDialog {
 		if (donateVersion && donateContentId != null) {
 
 			if (donateContentId > 0) {
-				String content = ResUtil.loadResToString(donateContentId, getContext());
+				String content = ResUtil.loadResToString(donateContentId, getContext().getResources());
 				if (content != null)
 					summary.append(content);
 			}
@@ -188,7 +188,7 @@ public class VersionInfoDialog extends AlertDialog {
 
 				int stringId = ResUtil.getString(rawClass, "news_" + version);
 				if (stringId > 0) {
-					String content = ResUtil.loadResToString(stringId, getContext());
+					String content = ResUtil.loadResToString(stringId, getContext().getResources());
 					if (content != null)
 						summary.append(content);
 				}

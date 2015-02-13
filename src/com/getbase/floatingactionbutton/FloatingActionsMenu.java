@@ -187,6 +187,36 @@ public class FloatingActionsMenu extends ViewGroup {
 		init(context, attrs);
 	}
 
+	public int getAddButtonPlusColor() {
+		return mAddButtonPlusColor;
+	}
+
+	public void setAddButtonPlusColor(int mAddButtonPlusColor) {
+		this.mAddButtonPlusColor = mAddButtonPlusColor;
+		if (mAddButton != null)
+			mAddButton.updateBackground();
+	}
+
+	public int getAddButtonColorNormal() {
+		return mAddButtonColorNormal;
+	}
+
+	public void setAddButtonColorNormal(int mAddButtonColorNormal) {
+		this.mAddButtonColorNormal = mAddButtonColorNormal;
+		if (mAddButton != null)
+			mAddButton.updateBackground();
+	}
+
+	public int getAddButtonColorPressed() {
+		return mAddButtonColorPressed;
+	}
+
+	public void setAddButtonColorPressed(int mAddButtonColorPressed) {
+		this.mAddButtonColorPressed = mAddButtonColorPressed;
+		if (mAddButton != null)
+			mAddButton.updateBackground();
+	}
+
 	private void init(Context context, AttributeSet attributeSet) {
 		mAddButtonPlusColor = getColor(android.R.color.white);
 		mAddButtonColorNormal = getColor(android.R.color.holo_blue_dark);

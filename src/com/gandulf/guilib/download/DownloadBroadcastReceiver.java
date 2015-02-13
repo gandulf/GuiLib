@@ -89,8 +89,8 @@ public class DownloadBroadcastReceiver extends BroadcastReceiver {
 
 						if (status == DownloadManager.STATUS_SUCCESSFUL) {
 							Intent serviceIntent = new Intent(context, UnzipIntentService.class);
-							serviceIntent.putExtra(UnzipIntentService.INTENT_BASEPATH, basePath);
 							serviceIntent.putExtra(UnzipIntentService.INTENT_DOWNLOAD_ID, downloadId);
+							serviceIntent.putExtra(UnzipIntentService.INTENT_OUTPUT_URI, basePath);
 							context.startService(serviceIntent);
 							DownloaderGinger.todoUnzip.remove(downloadId);
 						} else if (status == DownloadManager.STATUS_FAILED) {

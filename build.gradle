@@ -1,13 +1,18 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven {
+            url uri('https://oss.sonatype.org/content/repositories/snapshots/')
+        }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.+'
+        classpath 'com.android.tools.build:gradle:1.0.0'
+        classpath 'com.github.ksoichiro:gradle-eclipse-aar-plugin:0.1.0-SNAPSHOT'
     }
 }
 
-apply plugin: 'android-library'
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.ksoichiro.eclipse.aar'
 
 group = 'com.gandulf.guilib'
 version = '1.1.0'
@@ -16,18 +21,23 @@ repositories {
   mavenCentral()
 }
 
-tasks.withType(Compile) {
-  options.encoding = "UTF-8"
+dependencies {
+    compile 'com.android.support:support-v4:+'
+    compile 'com.nhaarman.listviewanimations:lib-core:3.1.0'
+    compile 'com.nhaarman.listviewanimations:lib-manipulation:3.1.0'
 }
 
-dependencies {
-    compile 'com.android.support:support-v13:20+'       
-    compile fileTree(dir: 'libs', include: '*.jar', exclude: 'android-support-v13.jar')
+
+// Configure plugin
+eclipseAar {
+    androidTarget = 'android-21'
+    aarDependenciesDir = 'aarDependencies'
 }
+
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion "20"
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
 
     sourceSets {
         main {
@@ -54,3 +64,5 @@ android {
         release.setRoot('build-types/release')
     }
 }
+
+tasks.withType(JavaCompile) { options.encoding = "UTF-8" }

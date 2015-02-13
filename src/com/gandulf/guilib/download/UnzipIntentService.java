@@ -10,14 +10,15 @@ import java.util.zip.ZipInputStream;
 import android.annotation.TargetApi;
 import android.app.DownloadManager;
 import android.app.IntentService;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
-import android.text.TextUtils;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 
 import com.gandulf.guilib.R;
 import com.gandulf.guilib.util.Debug;
@@ -25,14 +26,17 @@ import com.gandulf.guilib.util.Debug;
 @TargetApi(value = Build.VERSION_CODES.GINGERBREAD)
 public class UnzipIntentService extends IntentService {
 
-	public static final String INTENT_BASEPATH = "basePath";
-
 	public static final String INTENT_DOWNLOAD_ID = "downloadId";
+	public static final String INTENT_OUTPUT_URI = "outputURI";
 
-	private NotificationManager notificationManager;
-	private Notification notification;
+	public static final int UNZIP_ID = 1;
 
-	private DownloadManager downloadManager;
+	public static final String ACTION_UNZIP_COMPLETE = "com.dsatab.intent.action.ACTION_UNZIP_COMPLETE";
+	public static final String INTENT_RESULT = "result";
+
+	public static final int RESULT_OK = 1;
+	public static final int RESULT_ERROR = 2;
+	public static final int RESULT_CANCELED = 3;
 
 	/**
 	 * @param name
@@ -41,60 +45,63 @@ public class UnzipIntentService extends IntentService {
 		super("UnzipIntentService");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.IntentService#onCreate()
-	 */
-	@Override
-	public void onCreate() {
-		super.onCreate();
+	public static int unzip(Context context, long downloadId, Uri outputURI) {
 
-		downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-		notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(), 0);
 
-		// the next two lines initialize the Notification, using the
-		// configurations above
-		notification = new Notification(android.R.drawable.stat_sys_download, "Unpacking package",
-				System.currentTimeMillis());
-	}
+		DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+		NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.IntentService#onHandleIntent(android.content.Intent)
-	 */
-	@Override
-	protected void onHandleIntent(Intent intent) {
-		String errorDescription = null;
-		Exception caughtException = null;
+		NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
+		notificationBuilder.setSmallIcon(android.R.drawable.stat_sys_download);
+		notificationBuilder.setContentTitle("Unpacking package");
+		notificationBuilder.setWhen(System.currentTimeMillis());
+		notificationBuilder.setContentIntent(contentIntent);
 
-		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(), 0);
-
-		String basePath = intent.getStringExtra(INTENT_BASEPATH);
-		long downloadId = intent.getLongExtra(INTENT_DOWNLOAD_ID, -1);
-
-		int result = Downloader.RESULT_OK;
+		int result = RESULT_OK;
 		File baseDir = null;
-		if (!TextUtils.isEmpty(basePath) && downloadId != -1) {
+		if (outputURI != null && downloadId != -1) {
 			// Create a directory in the SDCard to store the files
-			baseDir = new File(basePath);
+			baseDir = new File(outputURI.getPath());
 			if (!baseDir.exists()) {
 				baseDir.mkdirs();
 			}
 
 			ZipInputStream inputStream = null;
 			try {
+
+				DownloadManager.Query q = new DownloadManager.Query();
+				q.setFilterById(downloadId);
+				Cursor c = downloadManager.query(q);
+				String title = "Unpacking ...";
+				int totalSize = 0;
+				if (c.moveToFirst()) {
+					int status = c.getInt(c.getColumnIndex(DownloadManager.COLUMN_STATUS));
+					if (status == DownloadManager.STATUS_SUCCESSFUL) {
+						// process download
+						title = c.getString(c.getColumnIndex(DownloadManager.COLUMN_TITLE));
+
+						totalSize = c.getInt(c.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+						// get other required data by changing the constant passed to getColumnIndex
+					}
+				}
+				c.close();
+
 				// Open the ZipInputStream
 				ParcelFileDescriptor pfd = downloadManager.openDownloadedFile(downloadId);
 
 				inputStream = new ZipInputStream(new ParcelFileDescriptor.AutoCloseInputStream(pfd));
-
+				int bitsread = 0;
 				// Loop through all the files and folders
 				for (ZipEntry entry = inputStream.getNextEntry(); entry != null; entry = inputStream.getNextEntry()) {
 
-					notification.setLatestEventInfo(this, "Unpacking...", entry.getName(), contentIntent);
-					notificationManager.notify(DownloadBroadcastReceiver.UNZIP_ID, notification);
+					bitsread += entry.getCompressedSize();
+
+					notificationBuilder.setContentTitle(title);
+					notificationBuilder.setContentText(entry.getName());
+					notificationBuilder.setProgress(totalSize, bitsread, true);
+
+					notificationManager.notify(UNZIP_ID, notificationBuilder.build());
 
 					Debug.verbose("Extracting: " + entry.getName() + "...");
 
@@ -112,10 +119,7 @@ public class UnzipIntentService extends IntentService {
 						BufferedOutputStream bufferedOutputStream = null;
 						try {
 							if (!innerFile.getParentFile().canWrite()) {
-								errorDescription = "DsaTab erhielt keine Schreibrechte für folgende Datei:"
-										+ innerFile.getAbsolutePath()
-										+ ". Der häufigste Grund hierfür ist, dass die SD-Karte gerade vom PC verwendet wird. Trennen am besten das Kabel zwischen Smartphone und Pc und versuche es erneut.";
-								result = Downloader.RESULT_ERROR;
+								result = RESULT_ERROR;
 								break;
 							}
 							FileOutputStream outputStream = new FileOutputStream(innerFile.getAbsolutePath());
@@ -135,11 +139,6 @@ public class UnzipIntentService extends IntentService {
 							bufferedOutputStream.flush();
 							bufferedOutputStream.close();
 
-						} catch (Exception e) {
-							Debug.error(e);
-							caughtException = e;
-							result = Downloader.RESULT_ERROR;
-							break;
 						} finally {
 							if (bufferedOutputStream != null)
 								bufferedOutputStream.close();
@@ -150,11 +149,9 @@ public class UnzipIntentService extends IntentService {
 					inputStream.closeEntry();
 				}
 				inputStream.close();
-
 			} catch (Exception e) {
 				Debug.error(e);
-				caughtException = e;
-				result = Downloader.RESULT_ERROR;
+				result = RESULT_ERROR;
 			} finally {
 				if (inputStream != null) {
 					try {
@@ -165,43 +162,52 @@ public class UnzipIntentService extends IntentService {
 			}
 
 		} else {
-			result = Downloader.RESULT_CANCELED;
+			result = RESULT_CANCELED;
 		}
-		switch (result) {
-		case Downloader.RESULT_OK:
-			notification.setLatestEventInfo(this, "Unpacking completed", getString(R.string.download_finished),
-					contentIntent);
-			notification.flags |= Notification.FLAG_AUTO_CANCEL;
-			notification.icon = android.R.drawable.stat_sys_download_done;
-			notificationManager.notify(DownloadBroadcastReceiver.UNZIP_ID, notification);
 
-			MediaScannerWrapper wrapper = new MediaScannerWrapper(getApplicationContext(), baseDir.getAbsolutePath(),
-					"image/*");
+		switch (result) {
+		case RESULT_OK:
+			notificationBuilder.setContentTitle("Unpacking completed");
+			notificationBuilder.setContentText(context.getString(R.string.download_finished));
+			notificationBuilder.setSmallIcon(android.R.drawable.stat_sys_download_done);
+			notificationBuilder.setProgress(100, 100, false);
+			notificationManager.notify(UNZIP_ID, notificationBuilder.build());
+			notificationManager.cancel(UNZIP_ID);
+
+			MediaScannerWrapper wrapper = new MediaScannerWrapper(context.getApplicationContext(),
+					baseDir.getAbsolutePath(), "image/*");
 			wrapper.scan();
 
 			break;
-		case Downloader.RESULT_CANCELED:
-			notificationManager.cancel(DownloadBroadcastReceiver.UNZIP_ID);
+		case RESULT_CANCELED:
+			notificationManager.cancel(UNZIP_ID);
 			break;
-		case Downloader.RESULT_ERROR:
-			if (errorDescription == null) {
-				notification.setLatestEventInfo(this, "Unpacking failed", getString(R.string.download_error),
-						contentIntent);
-			} else {
-				notification.setLatestEventInfo(this, "Unpacking failed", errorDescription, contentIntent);
-			}
-			notification.flags |= Notification.FLAG_AUTO_CANCEL;
-			notification.icon = android.R.drawable.stat_sys_warning;
-			notificationManager.notify(DownloadBroadcastReceiver.UNZIP_ID, notification);
+		case RESULT_ERROR:
+			notificationBuilder.setContentTitle("Unpacking failed");
+			notificationBuilder.setContentText(context.getString(R.string.download_error));
+			notificationBuilder.setSmallIcon(android.R.drawable.stat_sys_warning);
+			notificationBuilder.setProgress(100, 100, false);
+			notificationManager.notify(UNZIP_ID, notificationBuilder.build());
 			break;
 		}
 
-		downloadManager.remove(downloadId);
+		return result;
+	}
 
-		Intent broadcastIntent = new Intent(Downloader.ACTION_UNZIP_COMPLETE);
-		broadcastIntent.putExtra(Downloader.INTENT_RESULT, result);
-		broadcastIntent.putExtra(Downloader.INTENT_EXCEPTION, caughtException);
-		broadcastIntent.putExtra(Downloader.INTENT_ERROR, errorDescription);
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.IntentService#onHandleIntent(android.content.Intent)
+	 */
+	@Override
+	protected void onHandleIntent(Intent intent) {
+		long downloadId = intent.getLongExtra(INTENT_DOWNLOAD_ID, -1);
+		Uri outputURI = Uri.parse(intent.getStringExtra(INTENT_OUTPUT_URI));
+
+		int result = unzip(this, downloadId, outputURI);
+
+		Intent broadcastIntent = new Intent(ACTION_UNZIP_COMPLETE);
+		broadcastIntent.putExtra(INTENT_RESULT, result);
 		sendBroadcast(broadcastIntent);
 
 	}

@@ -20,10 +20,6 @@ import java.util.List;
 
 import android.content.Context;
 
-/**
- * @author Ganymede
- * 
- */
 public abstract class AbstractDownloader {
 
 	public static final String ACTION_UNZIP_COMPLETE = "com.dsatab.intent.action.ACTION_UNZIP_COMPLETE";

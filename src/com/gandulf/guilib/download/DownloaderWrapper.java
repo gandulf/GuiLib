@@ -16,6 +16,8 @@
  */
 package com.gandulf.guilib.download;
 
+import java.io.File;
+
 import android.content.Context;
 
 /**
@@ -23,6 +25,10 @@ import android.content.Context;
  * 
  */
 public class DownloaderWrapper {
+
+	public static AbstractDownloader getInstance(File baseDir, Context context) {
+		return getInstance(baseDir.getAbsolutePath(), context);
+	}
 
 	/* calling here forces class initialization */
 	public static AbstractDownloader getInstance(String basePath, Context context) {

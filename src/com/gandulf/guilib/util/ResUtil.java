@@ -128,7 +128,12 @@ public class ResUtil {
 				}
 			} else if (ContentResolver.SCHEME_CONTENT.equals(scheme) || ContentResolver.SCHEME_FILE.equals(scheme)) {
 				try {
-					d = Drawable.createFromStream(context.getContentResolver().openInputStream(mUri), null);
+					String uri = mUri.toString();
+					if (uri.startsWith("file:/") && !uri.startsWith("file:///")) {
+						uri = uri.replace("file:/", "file:///");
+					}
+
+					d = Drawable.createFromStream(context.getContentResolver().openInputStream(Uri.parse(uri)), null);
 				} catch (Exception e) {
 					Debug.warning("Unable to open content: " + mUri, e);
 				}

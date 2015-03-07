@@ -4,10 +4,8 @@ GuiLib
 A library containing usefull components and utility classes for android application development
 
 * ListViewAnimations can be downloaded from https://github.com/nhaarman/ListViewAnimations
-* PhotoView can be downloaded from https://github.com/chrisbanes/PhotoView
-* ShowcaseView can be downloaded from https://github.com/Espiandev/ShowcaseView
 * GridViewCompat can be downloaded from https://github.com/paramvir-b/AndroidGridViewCompatLib
-* FlipImageView can be downloaded from https://github.com/castorflex/FlipImageView
+* FloatingActionButton can be downloaded from https://github.com/futuresimple/android-floating-action-button
 
 ## License
 

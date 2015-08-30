@@ -17,14 +17,14 @@ package com.gandulf.guilib.download;
 
 import android.annotation.TargetApi;
 import android.app.DownloadManager;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 
 import com.gandulf.guilib.util.Debug;
 
@@ -49,16 +49,18 @@ public class DownloadBroadcastReceiver extends BroadcastReceiver {
 
 	private void notify(Context context, String message) {
 
-		NotificationManager notificationManager = (NotificationManager) context
-				.getSystemService(Context.NOTIFICATION_SERVICE);
-		Notification notification = new Notification(android.R.drawable.stat_sys_download, "Unpacking package",
-				System.currentTimeMillis());
+		NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+		builder.setSmallIcon(android.R.drawable.stat_sys_download);
+		builder.setContentTitle("Unpacking package");
+		builder.setAutoCancel(true);
+		builder.setContentTitle("DsaTab Download");
+		builder.setContentText(message);
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(), 0);
-		notification.setLatestEventInfo(context, "DsaTab Download", message, contentIntent);
-		notification.flags |= Notification.FLAG_AUTO_CANCEL;
-		notification.icon = android.R.drawable.stat_sys_warning;
-		notificationManager.notify(UNZIP_ID, notification);
+		builder.setContentIntent(contentIntent);
+
+		notificationManager.notify(UNZIP_ID, builder.build());
 	}
 
 	@Override

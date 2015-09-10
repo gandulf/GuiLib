@@ -39,7 +39,7 @@ public class FloatingHintEditText extends EditText {
 
 		mHintSize = getResources().getDimensionPixelSize(R.dimen.floatinghintedittext_hint_size);
 
-		mAnimationSteps = getResources().getInteger(R.dimen.floatinghintedittext_animation_steps);
+		mAnimationSteps = getResources().getInteger(R.integer.floatinghintedittext_animation_steps);
 
 		mHintColors = getHintTextColors();
 		mWasEmpty = TextUtils.isEmpty(getText());

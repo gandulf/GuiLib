@@ -26,8 +26,8 @@ public class FloatingHintTextView extends TextView {
 		this(context, attrs, R.attr.floatingHintTextViewStyle);
 	}
 
-	public FloatingHintTextView(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
+	public FloatingHintTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+		super(context, attrs, defStyleAttr);
 
 		mHintSize = getResources().getDimensionPixelSize(R.dimen.floatinghintedittext_hint_size);
 		mHintColors = getHintTextColors();

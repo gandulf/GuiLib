@@ -3,10 +3,6 @@ GuiLib
 
 A library containing usefull components and utility classes for android application development
 
-* ListViewAnimations can be downloaded from https://github.com/nhaarman/ListViewAnimations
-* GridViewCompat can be downloaded from https://github.com/paramvir-b/AndroidGridViewCompatLib
-* FloatingActionButton can be downloaded from https://github.com/futuresimple/android-floating-action-button
-
 ## License
 
     Copyright 2012 Gandulf Kohlweiss

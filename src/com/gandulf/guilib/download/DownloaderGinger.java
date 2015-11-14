@@ -15,48 +15,49 @@
  */
 package com.gandulf.guilib.download;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import android.annotation.TargetApi;
 import android.app.DownloadManager;
 import android.app.DownloadManager.Request;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.net.Uri;
-import android.os.Build;
 
-@TargetApi(value = Build.VERSION_CODES.GINGERBREAD)
-public class DownloaderGinger extends AbstractDownloader {
+import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 
-	public static List<Long> todoUnzip = new LinkedList<Long>();
+public class DownloaderGinger {
+
+	public static List<Long> todoUnzip = new LinkedList<>();
 
 	private DownloadManager downloadManager;
 
 	private BroadcastReceiver receiver;
 
-	DownloaderGinger(final String basePath, Context context) {
-		super(basePath, context);
+    public static DownloaderGinger getInstance(File baseDir, Context context) {
+        return new DownloaderGinger(baseDir.getAbsolutePath(), context);
+    }
 
-		downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+    DownloaderGinger(final String basePath, Context context) {
 
-		receiver = new DownloadBroadcastReceiver(basePath);
+        downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
 
-		context.getApplicationContext().registerReceiver(receiver,
-				new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-	}
+        receiver = new DownloadBroadcastReceiver(basePath);
 
-	public void downloadZip() {
-		for (String path : todo) {
-			Request request = new Request(Uri.parse(path));
-			todoUnzip.add(downloadManager.enqueue(request));
-		}
-	}
+        context.getApplicationContext().registerReceiver(receiver,
+                new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+    }
 
-	@Override
-	public void close() {
+    public void download(String path,boolean unzip) {
+        Request request = new Request(Uri.parse(path));
+        if (unzip)
+            todoUnzip.add(downloadManager.enqueue(request));
+        else
+            downloadManager.enqueue(request);
+    }
 
-	}
+    public void download(String path) {
+        download(path,true);
+    }
 
 }

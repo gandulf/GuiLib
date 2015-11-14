@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Rear view, which contains an accept image view that will be animated upon
+checking. The rear view represents the "checked" state.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv__card_back__accept"
+        style="?attr/flipRearImageStyle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@null"
+        android:layout_gravity="center"
+        />
+
+</FrameLayout>

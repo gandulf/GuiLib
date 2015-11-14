@@ -15,22 +15,22 @@
  */
 package com.gandulf.guilib.view.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Parcelable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
 import com.gandulf.guilib.util.Debug;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Ganymede
@@ -53,12 +53,14 @@ public abstract class MultiFragmentPagerAdapter extends PagerAdapter {
 
 	public abstract Fragment getItem(int position, int tab);
 
+    public abstract boolean isValidForItem(Fragment fragment, int position, int tab);
+
 	public abstract int getCount();
 
 	public abstract int getCount(int position);
 
 	@Override
-	public Object instantiateItem(View container, int position) {
+	public Object instantiateItem(ViewGroup container, int position) {
 		if (mCurTransaction == null) {
 			mCurTransaction = mFragmentManager.beginTransaction();
 		}
@@ -84,6 +86,11 @@ public abstract class MultiFragmentPagerAdapter extends PagerAdapter {
 			fragmentView.setId(containerId);
 			v.addView(fragmentView, i);
 
+            if (fragment!=null && !isValidForItem(fragment,position,i)) {
+                mCurTransaction.remove(fragment);
+                fragment = null;
+            }
+
 			if (fragment != null) {
 				Debug.verbose("Attaching item #" + position + ": f=" + fragment + " id:" + containerId);
 				mCurTransaction.attach(fragment);
@@ -101,15 +108,15 @@ public abstract class MultiFragmentPagerAdapter extends PagerAdapter {
 			}
 		}
 
-		mCurTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		mCurTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
-		((ViewPager) container).addView(v, 0);
+		container.addView(v, 0);
 
 		return v;
 	}
 
 	@Override
-	public void destroyItem(View container, int position, Object object) {
+	public void destroyItem(ViewGroup container, int position, Object object) {
 		if (mCurTransaction == null) {
 			mCurTransaction = mFragmentManager.beginTransaction();
 		}
@@ -126,7 +133,7 @@ public abstract class MultiFragmentPagerAdapter extends PagerAdapter {
 			}
 		}
 
-		((ViewPager) container).removeView((LinearLayout) object);
+		container.removeView((LinearLayout) object);
 	}
 
 	@Override
@@ -135,7 +142,7 @@ public abstract class MultiFragmentPagerAdapter extends PagerAdapter {
 	}
 
 	@Override
-	public void setPrimaryItem(View container, int position, Object object) {
+	public void setPrimaryItem(ViewGroup container, int position, Object object) {
 
 		List<Fragment> newPrimaryItems = new ArrayList<Fragment>(getCount(position));
 		int containerId = 0;
@@ -149,18 +156,17 @@ public abstract class MultiFragmentPagerAdapter extends PagerAdapter {
 			if (fragment != null) {
 				newPrimaryItems.add(fragment);
 			}
-
 		}
 
 		mCurrentPrimaryItems.removeAll(newPrimaryItems);
 		for (Fragment frag : mCurrentPrimaryItems) {
 			frag.setMenuVisibility(false);
-			frag.setUserVisibleHint(false);
+            frag.setUserVisibleHint(false);
 		}
 
 		for (Fragment frag : newPrimaryItems) {
 			frag.setMenuVisibility(true);
-			frag.setUserVisibleHint(true);
+            frag.setUserVisibleHint(true);
 		}
 
 		mCurrentPrimaryItems = newPrimaryItems;
@@ -168,7 +174,7 @@ public abstract class MultiFragmentPagerAdapter extends PagerAdapter {
 	}
 
 	@Override
-	public void finishUpdate(View container) {
+	public void finishUpdate(ViewGroup container) {
 		if (mCurTransaction != null) {
 			mCurTransaction.commitAllowingStateLoss();
 			mCurTransaction = null;
@@ -182,7 +188,7 @@ public abstract class MultiFragmentPagerAdapter extends PagerAdapter {
 	}
 
 	@Override
-	public void startUpdate(View arg0) {
+	public void startUpdate(ViewGroup arg0) {
 	}
 
 	@Override

@@ -28,10 +28,6 @@ import android.support.v4.app.NotificationManagerCompat;
 
 import com.gandulf.guilib.util.Debug;
 
-/**
- * @author Ganymede
- * 
- */
 @TargetApi(value = Build.VERSION_CODES.GINGERBREAD)
 public class DownloadBroadcastReceiver extends BroadcastReceiver {
 

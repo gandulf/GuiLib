@@ -1,6 +1,7 @@
 package com.gandulf.guilib.view;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatSeekBar;
 import android.util.AttributeSet;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
@@ -11,7 +12,7 @@ import android.widget.TextView;
 import com.gandulf.guilib.R;
 import com.gandulf.guilib.view.ViewScroller.ScrollingListener;
 
-public class SeekBarEx extends SeekBar {
+public class SeekBarEx extends AppCompatSeekBar {
 
 	public interface SeekBarLabelRenderer {
 		public String render(int value);

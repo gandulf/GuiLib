@@ -1,12 +1,5 @@
 package com.gandulf.guilib.download;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
 import android.annotation.TargetApi;
 import android.app.DownloadManager;
 import android.app.IntentService;
@@ -23,6 +16,13 @@ import android.support.v4.app.NotificationManagerCompat;
 import com.gandulf.guilib.R;
 import com.gandulf.guilib.util.Debug;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
 @TargetApi(value = Build.VERSION_CODES.GINGERBREAD)
 public class UnzipIntentService extends IntentService {
 
@@ -38,9 +38,6 @@ public class UnzipIntentService extends IntentService {
 	public static final int RESULT_ERROR = 2;
 	public static final int RESULT_CANCELED = 3;
 
-	/**
-	 * @param name
-	 */
 	public UnzipIntentService() {
 		super("UnzipIntentService");
 	}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Placeholder for the front view, to be set if no one is provided. The
+front view represents the "not checked" state.
+-->
+<ImageView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    style="?attr/flipFrontImageStyle"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    />
+

@@ -34,8 +34,8 @@ public class FloatingHintEditText extends EditText {
 		this(context, attrs, R.attr.floatingHintEditTextStyle);
 	}
 
-	public FloatingHintEditText(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
+	public FloatingHintEditText(Context context, AttributeSet attrs, int defStyleAttr) {
+		super(context, attrs, defStyleAttr);
 
 		mHintSize = getResources().getDimensionPixelSize(R.dimen.floatinghintedittext_hint_size);
 

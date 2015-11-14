@@ -112,9 +112,7 @@ public class Debug {
 
 	/**
 	 * Prints to the error stream of LogCat with information from the engine
-	 * 
-	 * @param message
-	 *            The message to be passed on
+	 *
 	 */
 	public static void warn(Throwable t) {
 		Log.w(tag, t.getMessage(), t);
@@ -122,9 +120,7 @@ public class Debug {
 
 	/**
 	 * Prints to the error stream of LogCat with information
-	 * 
-	 * @param message
-	 *            The message to be passed on
+	 *
 	 */
 	public static void error(Throwable t) {
 		Log.e(tag, t.getMessage(), t);

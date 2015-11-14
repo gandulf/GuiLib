@@ -15,11 +15,6 @@
  */
 package com.gandulf.guilib.util;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.List;
-
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -27,6 +22,11 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.TextUtils;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.List;
 
 /**
  * Utility class to bundle resource helper methods
@@ -119,10 +119,9 @@ public class ResUtil {
 
 			if (ContentResolver.SCHEME_ANDROID_RESOURCE.equals(scheme)) {
 				try {
-
 					// Load drawable through Resources, to get the source density information
-					OpenResourceIdResult r = getResourceId(context, mUri);
-					d = r.r.getDrawable(r.id);
+					OpenResourceIdResult resourceId = getResourceId(context, mUri);
+                    d = com.wnafee.vector.compat.ResourcesCompat.getDrawable(context, resourceId.id);
 				} catch (Exception e) {
 					Debug.warning("Unable to open content: " + mUri, e);
 				}

@@ -27,10 +27,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Implementation of {@link android.support.v4.view.PagerAdapter} that
- * uses a {@link Fragment} to manage each page. This class also handles
+ * uses a {@link android.support.v4.app.Fragment} to manage each page. This class also handles
  * saving and restoring of fragment's state.
  *
  * <p>This version of the pager is more useful when there are a large number
@@ -64,19 +65,22 @@ import java.util.ArrayList;
  * {@sample development/samples/Support13Demos/res/layout/fragment_pager_list.xml
  *      complete}
  */
-public abstract class FragmentStatePagerAdapter extends PagerAdapter {
-    private static final String TAG = "FragmentStatePagerA";
+public abstract class SortableFragmentStatePagerAdapter extends PagerAdapter {
+    private static final String TAG = "SortableStateAdapter";
     private static final boolean DEBUG = false;
 
     private final FragmentManager mFragmentManager;
     private FragmentTransaction mCurTransaction = null;
 
+    private long[] mItemIds = new long[] {};
     private ArrayList<Fragment.SavedState> mSavedState = new ArrayList<Fragment.SavedState>();
     protected ArrayList<Fragment> mFragments = new ArrayList<Fragment>();
     private Fragment mCurrentPrimaryItem = null;
 
-    public FragmentStatePagerAdapter(FragmentManager fm) {
+    public SortableFragmentStatePagerAdapter(FragmentManager fm) {
+
         mFragmentManager = fm;
+        createIdCache();
     }
 
     /**
@@ -84,12 +88,93 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
      */
     public abstract Fragment getItem(int position);
 
+    /**
+     * Return a unique identifier for the item at the given position.
+     */
+    public abstract long getItemId(int position);
+
     @Override
     public void startUpdate(ViewGroup container) {
     }
 
+    private void checkForIdChanges() {
+        long[] newItemIds = new long[getCount()];
+        for (int i = 0; i < newItemIds.length; i++) {
+            newItemIds[i] = getItemId(i);
+        }
+
+        if (!Arrays.equals(mItemIds, newItemIds)) {
+            ArrayList<Fragment.SavedState> newSavedState = new ArrayList<Fragment.SavedState>();
+            ArrayList<Fragment> newFragments = new ArrayList<Fragment>();
+            for (int i = 0; i < newItemIds.length; i++) {
+                newFragments.add(null);
+            }
+
+            for (int oldPosition = 0; oldPosition < mItemIds.length; oldPosition++) {
+                int newPosition = POSITION_NONE;
+                for (int i = 0; i < newItemIds.length; i++) {
+                    if (mItemIds[oldPosition] == newItemIds[i]) {
+                        newPosition = i;
+                        break;
+                    }
+                }
+                if (newPosition >= 0) {
+                    if (oldPosition < mSavedState.size()) {
+                        Fragment.SavedState savedState = mSavedState.get(oldPosition);
+                        if (savedState != null) {
+                            while (newSavedState.size() <= newPosition) {
+                                newSavedState.add(null);
+                            }
+                            newSavedState.set(newPosition, savedState);
+                        }
+                    }
+                    if (oldPosition < mFragments.size()) {
+                        Fragment fragment = mFragments.get(oldPosition);
+                        if (fragment != null) {
+                            while (newFragments.size() <= newPosition) {
+                                newFragments.add(null);
+                            }
+                            newFragments.set(newPosition, fragment);
+                        }
+                    }
+                }
+            }
+
+            mItemIds = newItemIds;
+            mSavedState = newSavedState;
+            mFragments = newFragments;
+        }
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        checkForIdChanges();
+
+        super.notifyDataSetChanged();
+    }
+
+    /**
+     * Create the initial set of item IDs. Run this after you have set your adapter data.
+     */
+    public void createIdCache() {
+        // If we have already stored ids, don't overwrite them
+        if (mItemIds.length == 0) {
+            // getCount might have overhead, so run it as late as possible
+            final int count = getCount();
+            if (count > 0) {
+                mItemIds = new long[count];
+                for (int i = 0; i < count; i++) {
+                    mItemIds[i] = getItemId(i);
+                }
+            }
+        }
+    }
+
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
+
+        createIdCache();
+
         // If we already have this item instantiated, there is nothing
         // to do.  This can happen when we are restoring the entire pager
         // from its saved state, where the fragment manager has already
@@ -136,8 +221,13 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
         while (mSavedState.size() <= position) {
             mSavedState.add(null);
         }
-        mSavedState.set(position, mFragmentManager.saveFragmentInstanceState(fragment));
-        mFragments.set(position, null);
+        while (mFragments.size() <= position){
+            mFragments.add(null);
+        }
+        if(mFragments.get(position) != null){
+            mSavedState.set(position, mFragmentManager.saveFragmentInstanceState(mFragments.get(position)));
+            mFragments.set(position, null);
+        }
 
         mCurTransaction.remove(fragment);
     }
@@ -175,15 +265,25 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
     @Override
     public Parcelable saveState() {
         Bundle state = null;
+
+        mItemIds = new long[getCount()];
+        for (int i = 0; i < mItemIds.length; i++) {
+            mItemIds[i] = getItemId(i);
+        }
         if (mSavedState.size() > 0) {
             state = new Bundle();
+
+            if (mItemIds.length > 0) {
+                state.putLongArray("itemids", mItemIds);
+            }
+
             Fragment.SavedState[] fss = new Fragment.SavedState[mSavedState.size()];
             mSavedState.toArray(fss);
             state.putParcelableArray("states", fss);
         }
         for (int i=0; i<mFragments.size(); i++) {
             Fragment f = mFragments.get(i);
-            if (f != null && f.isAdded()) {
+            if (f != null) {
                 if (state == null) {
                     state = new Bundle();
                 }
@@ -199,6 +299,12 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
         if (state != null) {
             Bundle bundle = (Bundle)state;
             bundle.setClassLoader(loader);
+
+            mItemIds = bundle.getLongArray("itemids");
+            if (mItemIds == null) {
+                mItemIds = new long[] {};
+            }
+
             Parcelable[] fss = bundle.getParcelableArray("states");
             mSavedState.clear();
             mFragments.clear();
@@ -223,6 +329,7 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
                     }
                 }
             }
+            checkForIdChanges();
         }
     }
 }

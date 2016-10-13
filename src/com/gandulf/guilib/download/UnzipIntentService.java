@@ -1,6 +1,5 @@
 package com.gandulf.guilib.download;
 
-import android.annotation.TargetApi;
 import android.app.DownloadManager;
 import android.app.IntentService;
 import android.app.PendingIntent;
@@ -8,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -23,7 +21,6 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-@TargetApi(value = Build.VERSION_CODES.GINGERBREAD)
 public class UnzipIntentService extends IntentService {
 
 	public static final String INTENT_DOWNLOAD_ID = "downloadId";

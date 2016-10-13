@@ -15,30 +15,26 @@
  */
 package com.gandulf.guilib.download;
 
-import android.annotation.TargetApi;
 import android.app.DownloadManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
 import com.gandulf.guilib.util.Debug;
 
-@TargetApi(value = Build.VERSION_CODES.GINGERBREAD)
 public class DownloadBroadcastReceiver extends BroadcastReceiver {
 
 	public static final int UNZIP_ID = 1;
 
 	private String basePath;
 
-	public DownloadBroadcastReceiver() {
+    public DownloadBroadcastReceiver() {
 
-	}
-
+    }
 	public DownloadBroadcastReceiver(String basePath) {
 		this.basePath = basePath;
 	}
@@ -68,7 +64,7 @@ public class DownloadBroadcastReceiver extends BroadcastReceiver {
 
 			long downloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
 
-			if (downloadId >= 0 && DownloaderGinger.todoUnzip.contains(downloadId)) {
+			if (downloadId >= 0 && Downloader.todoUnzip.contains(downloadId)) {
 
 				DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
 
@@ -90,7 +86,7 @@ public class DownloadBroadcastReceiver extends BroadcastReceiver {
 							serviceIntent.putExtra(UnzipIntentService.INTENT_DOWNLOAD_ID, downloadId);
 							serviceIntent.putExtra(UnzipIntentService.INTENT_OUTPUT_URI, basePath);
 							context.startService(serviceIntent);
-							DownloaderGinger.todoUnzip.remove(downloadId);
+							Downloader.todoUnzip.remove(downloadId);
 						} else if (status == DownloadManager.STATUS_FAILED) {
 							notify(context, "Fehler:\n" + reason);
 						} else if (status == DownloadManager.STATUS_PAUSED) {

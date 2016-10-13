@@ -15,8 +15,6 @@ import android.widget.ImageView;
 import android.widget.ViewFlipper;
 
 import com.gandulf.guilib.R;
-import com.gandulf.guilib.listener.CheckableListenable;
-import com.gandulf.guilib.listener.OnCheckedChangeListener;
 
 /*
  * Copyright 2014 Francisco Manuel Lopez Jurado
@@ -179,7 +177,7 @@ public class FlipCheckBox extends ViewFlipper implements CheckableListenable {
     private void initComponent(Context context, AttributeSet attrs,
                                int defStyleAttr) {
         // Inflate the view and find its UI elements references
-        LayoutInflater.from(getContext()).inflate(R.layout.flipcheckbox_view,
+        LayoutInflater.from(getContext()).inflate(R.layout.fcb_view,
                 this, true);
 
         mIVAccept = (ImageView) findViewById(R.id.iv__card_back__accept);
@@ -224,7 +222,11 @@ public class FlipCheckBox extends ViewFlipper implements CheckableListenable {
         else
             setFrontBackgroundDrawable(mFrontBackground);
     }
-
+    public void setFrontResource(int drawableId) {
+        if (getFrontView() instanceof ImageView) {
+            ((ImageView) getFrontView()).setImageResource(drawableId);
+        }
+    }
     public void setFrontDrawable(Drawable drawable) {
         if (getFrontView() instanceof ImageView) {
             ((ImageView) getFrontView()).setImageDrawable(drawable);
@@ -276,7 +278,7 @@ public class FlipCheckBox extends ViewFlipper implements CheckableListenable {
      */
     public void setFrontView(int layoutResId) {
         setFrontView(LayoutInflater.from(getContext()).inflate(
-                layoutResId > 0 ? layoutResId : R.layout.simple_card_front,
+                layoutResId > 0 ? layoutResId : R.layout.fcb_view_front,
                 null));
     }
 
@@ -534,6 +536,18 @@ public class FlipCheckBox extends ViewFlipper implements CheckableListenable {
         ss.flipAnimationDuration = getFlipAnimationDuration();
         ss.showAcceptImage = isShowingAcceptImage();
         return ss;
+    }
+
+
+    @Override
+    // BUGFIX: http://daniel-codes.blogspot.co.at/2010/05/viewflipper-receiver-not-registered.html
+    protected void onDetachedFromWindow() {
+        try {
+            super.onDetachedFromWindow();
+        }
+        catch (IllegalArgumentException e) {
+            stopFlipping();
+        }
     }
 
     @Override

@@ -26,7 +26,7 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DownloaderGinger {
+public class Downloader {
 
 	public static List<Long> todoUnzip = new LinkedList<>();
 
@@ -34,11 +34,11 @@ public class DownloaderGinger {
 
 	private BroadcastReceiver receiver;
 
-    public static DownloaderGinger getInstance(File baseDir, Context context) {
-        return new DownloaderGinger(baseDir.getAbsolutePath(), context);
+    public static Downloader getInstance(File baseDir, Context context) {
+        return new Downloader(baseDir.getAbsolutePath(), context);
     }
 
-    DownloaderGinger(final String basePath, Context context) {
+    Downloader(final String basePath, Context context) {
 
         downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
 

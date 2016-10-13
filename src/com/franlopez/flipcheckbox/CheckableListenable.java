@@ -1,4 +1,4 @@
-package com.gandulf.guilib.listener;
+package com.franlopez.flipcheckbox;
 
 import android.widget.Checkable;
 

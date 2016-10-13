@@ -12,7 +12,8 @@ import android.widget.EditText;
 import com.gandulf.guilib.R;
 
 public class FloatingHintEditText extends EditText {
-	private static enum Animation {
+
+    private enum Animation {
 		NONE, SHRINK, GROW
 	}
 

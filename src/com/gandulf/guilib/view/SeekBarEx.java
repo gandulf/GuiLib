@@ -69,11 +69,11 @@ public class SeekBarEx extends AppCompatSeekBar {
 			}
 
 			if (popupWindow == null) {
-				TextView textView = (TextView) inflate(getContext(), R.layout.popup_text, null);
+				TextView textView = (TextView) inflate(getContext(), R.layout.sbx_popup_text, null);
 				popupWindow = new PopupWindow(textView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 				popupWindow.setContentView(textView);
 				textView.measure(0, 0);
-				popupWindow.setBackgroundDrawable(getContext().getResources().getDrawable(R.drawable.popup_background));
+				popupWindow.setBackgroundDrawable(getContext().getResources().getDrawable(R.drawable.sbx_popup_background));
 			}
 		}
 

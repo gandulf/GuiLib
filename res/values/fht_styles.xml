@@ -1,9 +1,5 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="FloatingHintEditText" parent="@android:style/Widget.EditText">
-        <item name="android:paddingTop">0dp</item>
-    </style>
-    
     <style name="FloatingHintTextView" parent="@android:style/Widget.TextView">
         <item name="android:paddingTop">0dp</item>
     </style>

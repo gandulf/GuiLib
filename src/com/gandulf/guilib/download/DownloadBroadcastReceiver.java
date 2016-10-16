@@ -23,10 +23,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-
-import com.gandulf.guilib.util.Debug;
+import android.util.Log;
 
 public class DownloadBroadcastReceiver extends BroadcastReceiver {
+
+    private static final String TAG="Downloader";
 
 	public static final int UNZIP_ID = 1;
 
@@ -68,7 +69,7 @@ public class DownloadBroadcastReceiver extends BroadcastReceiver {
 
 				DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
 
-				Debug.verbose("Received download completed " + downloadId);
+				Log.d(TAG, "Received download completed " + downloadId);
 
 				DownloadManager.Query query = new DownloadManager.Query();
 				query.setFilterById(downloadId);

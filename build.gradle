@@ -33,7 +33,6 @@ android {
 
         versionName "1.2"
         versionCode 3
-        //generatedDensities = []
         vectorDrawables.useSupportLibrary = true
     }
 

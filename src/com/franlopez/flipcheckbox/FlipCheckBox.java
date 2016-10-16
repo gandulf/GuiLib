@@ -42,8 +42,7 @@ import com.gandulf.guilib.R;
  * layout or programmatically. Please, refer to those attributes documentation.
  * <p/>
  * By default, when the View is clicked, it will switch its state, and an event
- * to the assigned
- * {@link OnFlipCheckedChangeListener#onCheckedChanged(FlipCheckBox, boolean)}
+ * to the assigned OnCheckedChangeListener
  * will be fired. Subscribe to that listener (using
  * {@link #setOnCheckedChangeListener(OnCheckedChangeListener)}) method.
  *

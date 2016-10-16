@@ -6,13 +6,14 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.util.Log;
 
 import com.gandulf.guilib.R;
-import com.gandulf.guilib.util.Debug;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -22,6 +23,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class UnzipIntentService extends IntentService {
+
+    private static final String TAG="Downloader";
 
 	public static final String INTENT_DOWNLOAD_ID = "downloadId";
 	public static final String INTENT_OUTPUT_URI = "outputURI";
@@ -97,7 +100,7 @@ public class UnzipIntentService extends IntentService {
 
 					notificationManager.notify(UNZIP_ID, notificationBuilder.build());
 
-					Debug.verbose("Extracting: " + entry.getName() + "...");
+					Log.d(TAG, "Extracting: " + entry.getName() + "...");
 
 					File innerFile = new File(baseDir, entry.getName());
 					// if (innerFile.exists()) {
@@ -144,7 +147,7 @@ public class UnzipIntentService extends IntentService {
 				}
 				inputStream.close();
 			} catch (Exception e) {
-				Debug.error(e);
+				Log.e(TAG,e.getLocalizedMessage(), e);
 				result = RESULT_ERROR;
 			} finally {
 				if (inputStream != null) {
@@ -205,4 +208,34 @@ public class UnzipIntentService extends IntentService {
 		sendBroadcast(broadcastIntent);
 
 	}
+
+    static class MediaScannerWrapper implements MediaScannerConnection.MediaScannerConnectionClient {
+
+        private MediaScannerConnection mConnection;
+        private String mPath;
+        private String mMimeType;
+
+        // filePath - where to scan;
+        // mime type of media to scan i.e. "image/jpeg".
+        // use "*/*" for any media
+        public MediaScannerWrapper(Context ctx, String filePath, String mime) {
+            mPath = filePath;
+            mMimeType = mime;
+            mConnection = new MediaScannerConnection(ctx, this);
+        }
+
+        // do the scanning
+        public void scan() {
+            mConnection.connect();
+        }
+
+        // start the scan when scanner is ready
+        public void onMediaScannerConnected() {
+            mConnection.scanFile(mPath, mMimeType);
+        }
+
+        public void onScanCompleted(String path, Uri uri) {
+            mConnection.disconnect();
+        }
+    }
 }

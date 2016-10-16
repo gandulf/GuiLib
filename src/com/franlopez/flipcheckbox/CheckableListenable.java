@@ -4,7 +4,7 @@ import android.widget.Checkable;
 
 public interface CheckableListenable extends Checkable {
 
-	public void setOnCheckedChangeListener(OnCheckedChangeListener onCheckedChangeListener);
+	void setOnCheckedChangeListener(OnCheckedChangeListener onCheckedChangeListener);
 
     /**
      * Set the state of this component to the given value, without applying the
@@ -12,5 +12,5 @@ public interface CheckableListenable extends Checkable {
      *
      * @param checked The component state.
      */
-    public void setCheckedImmediate(boolean checked);
+    void setCheckedImmediate(boolean checked);
 }
